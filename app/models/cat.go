@@ -1,7 +1,7 @@
 package models
 
 import (
-	"parsley/db"
+	"parsley/internals"
 	"time"
 )
 
@@ -12,5 +12,5 @@ type Cat struct {
 }
 
 func init() {
-	db.Register(Cat{})
+	internals.RegisterModel(Cat{})
 }
