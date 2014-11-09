@@ -6,9 +6,9 @@ import (
 )
 
 type Ingredient struct {
-	Id int64 `json:"id"`
-	//     User        User    `json:"-"`
-	//     UserId      int64   `json:"user_id"`
+	Id           int64 `json:"id"`
+	User         User  `json:"-"`
+	UserId       int64 `json:"user_id"`
 	SuppliedBy   IngredientSupplier
 	SuppliedById sql.NullInt64
 	// TODO: Add actual unit measurements
