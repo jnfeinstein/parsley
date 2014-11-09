@@ -54,7 +54,6 @@ func UserRequired(conn db.Connection, w http.ResponseWriter, r *http.Request, to
 			} else {
 				user := NewUser(profile.EmailAddresses(), conn)
 				s.Set("user_id", user.Id)
-				http.Redirect(w, r, "/signup", http.StatusTemporaryRedirect)
 			}
 		} else {
 			http.Error(w, "Error communicating with Google", http.StatusBadRequest)
