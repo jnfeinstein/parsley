@@ -19,9 +19,3 @@ func NewDatabaseConnection() (*DatabaseConnection, error) {
 	}
 	return &DatabaseConnection{&db}, nil
 }
-
-var AllModels []interface{} = []interface{}{}
-
-func Register(m interface{}) {
-	AllModels = append(AllModels, m)
-}
