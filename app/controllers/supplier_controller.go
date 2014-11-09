@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"fmt"
+	"encoding/json"
 	"github.com/go-martini/martini"
 	"github.com/martini-contrib/render"
 	"log"
@@ -26,30 +26,16 @@ func (s SuppliersController) Initialize(m *martini.ClassicMartini) {
 	})
 
 	m.Post("/suppliers", func(r render.Render, req *http.Request) {
-		name := req.PostFormValue("name")
-		if name == "" {
-			r.Error(400)
-			return
-		}
-		supplier := models.Supplier{Name: name}
-		conn.Create(&supplier)
-		r.JSON(200, supplier)
-	})
-	m.Put("/suppliers/(?P<id>\\d+)", func(r render.Render, params martini.Params, req *http.Request) {
-		var id int64
-		if _, err := fmt.Sscan(params["id"], id); err != nil {
-			r.Error(400)
-			return
-		}
-		name := req.PostFormValue("name")
-		if name == "" {
-			r.Error(400)
-			return
-		}
 		supplier := models.Supplier{}
-		conn.First(&supplier, id)
-		supplier.Name = name
-		conn.Save(supplier)
+
+		if json.NewDecoder(req.Body).Decode(&supplier) != nil {
+			r.Error(401)
+			return
+		} else if supplier.Name == "" {
+			r.Error(400)
+			return
+		}
+		conn.Save(supplier) // updates if ID provided
 		r.JSON(200, supplier)
 	})
 }
