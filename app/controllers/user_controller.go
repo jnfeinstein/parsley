@@ -71,10 +71,6 @@ func (u *UserController) Initialize(m *martini.ClassicMartini) {
 			}
 		}
 	})
-
-	m.Get("/user", oauth2.LoginRequired, func(tokens oauth2.Tokens) string {
-		return tokens.Access()
-	})
 }
 
 func init() {
