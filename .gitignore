@@ -1,0 +1,7 @@
+node_modules
+public/vendor
+public/javascripts
+public/stylesheets
+.DS_Store
+tmp
+.sass-cache

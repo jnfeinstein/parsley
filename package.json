@@ -1,0 +1,15 @@
+{
+  "dependencies": {
+    "bower": "*",
+    "grunt": "*",
+    "grunt-contrib-compass": "*",
+    "grunt-contrib-clean": "*",
+    "grunt-contrib-uglify": "*"
+  },
+  "devDependencies": {
+    "grunt-contrib-watch": "*"
+  },
+  "scripts": {
+    "postinstall": "./node_modules/bower/bin/bower install"
+  }
+}
