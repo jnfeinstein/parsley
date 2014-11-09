@@ -11,10 +11,6 @@ type Cat struct {
 	CreatedAt time.Time `json:"createdAt"`
 }
 
-func (c Cat) Migrate(db *db.DatabaseConnection) error {
-	return db.AutoMigrate(&Cat{}).Error
-}
-
 func init() {
-	db.MigrateMe(Cat{})
+	db.Register(Cat{})
 }

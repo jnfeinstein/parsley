@@ -20,28 +20,8 @@ func NewDatabaseConnection() (*DatabaseConnection, error) {
 	return &DatabaseConnection{&db}, nil
 }
 
-type MigrateAble interface {
-	Migrate(*DatabaseConnection) error
-}
+var AllModels []interface{} = []interface{}{}
 
-var toMigrate []MigrateAble = []MigrateAble{}
-
-func MigrateMe(m MigrateAble) {
-	toMigrate = append(toMigrate, m)
-}
-
-func Migrate() (int, error) {
-	db, err := NewDatabaseConnection()
-	if err != nil {
-		return -1, err
-	}
-
-	for _, m := range toMigrate {
-		err := m.Migrate(db)
-		if err != nil {
-			return -1, err
-		}
-	}
-
-	return len(toMigrate), nil
+func Register(m interface{}) {
+	AllModels = append(AllModels, m)
 }
