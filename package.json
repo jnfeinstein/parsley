@@ -4,7 +4,8 @@
     "grunt": "*",
     "grunt-contrib-compass": "*",
     "grunt-contrib-clean": "*",
-    "grunt-contrib-uglify": "*"
+    "grunt-contrib-uglify": "*",
+    "grunt-react": "*"
   },
   "devDependencies": {
     "grunt-contrib-watch": "*"

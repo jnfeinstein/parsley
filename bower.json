@@ -4,6 +4,7 @@
   "dependencies": {
     "jquery": "*",
     "lodash": "*",
-    "bootstrap": "*"
+    "bootstrap": "*",
+    "react": "*"
   }
 }
