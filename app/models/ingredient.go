@@ -1,7 +1,7 @@
 package models
 
 import (
-    "parsley/db"
+    "parsley/internals"
     "database/sql"
 )
 
@@ -16,5 +16,5 @@ type Ingredient struct {
 }
 
 func init() {
-    db.Register(Ingredient{})
+    internals.RegisterModel(Ingredient{})
 }
