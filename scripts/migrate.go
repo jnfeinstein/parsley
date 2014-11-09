@@ -11,7 +11,7 @@ import (
 func main() {
 	fmt.Println("Beginning migration")
 
-	db, err := NewDatabaseConnection()
+	db, err := NewConnection()
 	if err != nil {
 		fmt.Println("Error migrating database")
 		os.Exit(1)
