@@ -7,7 +7,7 @@ import (
 	"github.com/go-martini/martini"
 )
 
-const PostgresArgs = "dbname=postgres sslmode=disable"
+const PostgresArgs = "host=/var/run/postgresql dbname=postgres sslmode=disable"
 const Heroku = false
 
 func Initialize(m *martini.ClassicMartini) {
