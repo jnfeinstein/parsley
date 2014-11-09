@@ -14,7 +14,7 @@ type User struct {
 	UpdatedAt time.Time `json:"updatedAt"`
 }
 
-func NewUser(emailAddresses []string, conn *db.DatabaseConnection) *User {
+func NewUser(emailAddresses []string, conn db.Connection) *User {
 	user := User{Emails: []Email{}}
 	for _, email := range emailAddresses {
 		user.Emails = append(user.Emails, Email{Address: email})

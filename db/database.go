@@ -8,14 +8,14 @@ import (
 	"parsley/config"
 )
 
-type DatabaseConnection struct {
+type Connection struct {
 	*gorm.DB
 }
 
-func NewDatabaseConnection() (*DatabaseConnection, error) {
+func NewConnection() (*Connection, error) {
 	db, err := gorm.Open("postgres", config.PostgresArgs)
 	if err != nil {
 		return nil, err
 	}
-	return &DatabaseConnection{&db}, nil
+	return &Connection{&db}, nil
 }
