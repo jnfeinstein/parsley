@@ -1,31 +1,82 @@
 package controllers
 
 import (
+	"encoding/json"
 	"github.com/go-martini/martini"
-	gooauth2 "github.com/golang/oauth2"
 	"github.com/martini-contrib/oauth2"
+	"github.com/martini-contrib/sessions"
+	"io/ioutil"
+	"log"
+	"net/http"
+	. "parsley/app/models"
+	"parsley/config"
+	"parsley/db"
 	"parsley/internals"
 )
 
-const googleProfileInfoUrl = "https://www.googleapis.com/oauth2/v1/userinfo"
+const googleProfileUrl = "https://www.googleapis.com/plus/v1/people/me"
 
-var googleOAuth2Cfg = gooauth2.Options{
-	ClientID:     "242182491314-3kv6lg5gbqi3tcfp42fr2s1kvqkg09ih.apps.googleusercontent.com",
-	ClientSecret: "QJUY1sHMJhoZlJ6E10W9cJqz",
-	RedirectURL:  "http://localhost:3000/oauth2callback",
-	Scopes:       []string{"profile email"},
+type googleEmail struct {
+	Value string `json:"value"`
 }
 
-type OAuthController struct{}
+type googleProfile struct {
+	Emails []googleEmail `json:"emails"`
+}
 
-func (o *OAuthController) Initialize(m *martini.ClassicMartini) {
-	m.Use(oauth2.Google(&googleOAuth2Cfg))
+func (gp *googleProfile) EmailAddresses() []string {
+	emails := []string{}
+	for _, email := range gp.Emails {
+		emails = append(emails, email.Value)
+	}
+	return emails
+}
+
+func fetchGoogleProfile(accessToken string) *googleProfile {
+	resp, err := http.Get(googleProfileUrl + "?access_token=" + accessToken)
+	if err != nil {
+		log.Fatalf("user_controller: %s\n", err.Error())
+		return nil
+	}
+	body, _ := ioutil.ReadAll(resp.Body)
+	profile := googleProfile{}
+	json.Unmarshal(body, &profile)
+	return &profile
+}
+
+type UserController struct{}
+
+func (u *UserController) Initialize(m *martini.ClassicMartini) {
+	conn, err := db.NewDatabaseConnection()
+	if err != nil {
+		log.Fatalf("user_controller: %s\n", err.Error())
+	}
+
+	m.Use(oauth2.Google(&config.GoogleOAuthConfig))
+
+	m.Use(func(w http.ResponseWriter, r *http.Request, tokens oauth2.Tokens, s sessions.Session) {
+		if !tokens.IsExpired() && s.Get("user_id") == nil {
+			if profile := fetchGoogleProfile(tokens.Access()); profile != nil {
+				emails := []Email{}
+				conn.Where("address in (?)", profile.EmailAddresses()).Find(&emails)
+				if len(emails) > 0 {
+					s.Set("user_id", emails[0].UserId)
+				} else {
+					user := NewUser(profile.EmailAddresses(), conn)
+					s.Set("user_id", user.Id)
+					http.Redirect(w, r, "/signup", http.StatusTemporaryRedirect)
+				}
+			} else {
+				http.Error(w, "Error communicating with Google", http.StatusBadRequest)
+			}
+		}
+	})
 
 	m.Get("/user", oauth2.LoginRequired, func(tokens oauth2.Tokens) string {
-		tokens.Access()
+		return tokens.Access()
 	})
 }
 
 func init() {
-	internals.RegisterController(&OAuthController{})
+	internals.RegisterController(&UserController{})
 }
