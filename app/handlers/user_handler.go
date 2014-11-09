@@ -44,7 +44,7 @@ func fetchGoogleProfile(accessToken string) *googleProfile {
 
 func UserRequired(conn db.Connection, w http.ResponseWriter, r *http.Request, tokens oauth2.Tokens, s sessions.Session, c martini.Context) {
 	if tokens.IsExpired() {
-		http.Redirect(w, r, "/login", http.StatusTemporaryRedirect)
+		http.Error(w, "Unauthorized", http.StatusForbidden)
 	} else if s.Get("user_id") == nil {
 		if profile := fetchGoogleProfile(tokens.Access()); profile != nil {
 			emails := []Email{}
@@ -56,7 +56,7 @@ func UserRequired(conn db.Connection, w http.ResponseWriter, r *http.Request, to
 				s.Set("user_id", user.Id)
 			}
 		} else {
-			http.Error(w, "Error communicating with Google", http.StatusBadRequest)
+			http.Error(w, "Error communicating with Google", http.StatusInternalServerError)
 		}
 	}
 }
