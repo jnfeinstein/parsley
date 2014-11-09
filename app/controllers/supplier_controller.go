@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"github.com/go-martini/martini"
 	"github.com/martini-contrib/render"
-	"log"
 	"net/http"
 	"parsley/app/models"
 	"parsley/db"
@@ -14,18 +13,14 @@ import (
 type SuppliersController struct{}
 
 func (s SuppliersController) Initialize(m *martini.ClassicMartini) {
-	conn, err := db.NewDatabaseConnection()
-	if err != nil {
-		log.Fatalf("supplier_controller: %s\n", err.Error())
-	}
 
-	m.Get("/suppliers/list", func(r render.Render) {
+	m.Get("/suppliers/list", func(r render.Render, conn *db.Connection) {
 		suppliers := []models.Supplier{}
 		conn.Find(&suppliers)
 		r.JSON(200, suppliers)
 	})
 
-	m.Post("/suppliers", func(r render.Render, req *http.Request) {
+	m.Post("/suppliers", func(r render.Render, req *http.Request, conn *db.Connection) {
 		supplier := models.Supplier{}
 
 		if json.NewDecoder(req.Body).Decode(&supplier) != nil {
