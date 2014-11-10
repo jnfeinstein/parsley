@@ -11,7 +11,7 @@ import (
 type IndexController struct{}
 
 func (i *IndexController) Initialize(m *martini.ClassicMartini) {
-	m.Get("/", func(w http.ResponseWriter, req *http.Request, r render.Render, tokens oauth2.Tokens) {
+	m.Get("/($|about|contact)", func(w http.ResponseWriter, req *http.Request, r render.Render, tokens oauth2.Tokens) {
 		if tokens.IsExpired() {
 			r.HTML(200, "index", nil)
 		} else {
