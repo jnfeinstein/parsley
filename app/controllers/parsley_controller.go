@@ -10,7 +10,7 @@ import (
 type ParsleyController struct{}
 
 func (i *ParsleyController) Initialize(m *martini.ClassicMartini) {
-	m.Get("/parsley", handlers.UserRequired, func(tokens oauth2.Tokens) {
+	m.Get("/parsley", oauth2.LoginRequired, handlers.UserRequired, func(tokens oauth2.Tokens) {
 
 	})
 }
