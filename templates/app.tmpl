@@ -5,16 +5,27 @@
     <link rel="stylesheet" href="/vendor/bootstrap/dist/css/bootstrap-theme.css">
     <link rel="stylesheet" href="/stylesheets/app.css">
 
+    <script type="text/javascript">
+      // Dummy variable so that NodeJS stuff doesn't complain
+      var module = {};
+    </script>
+
     {{ if heroku }}
       <script type="text/javascript" src="/vendor/lodash/dist/lodash.min.js"></script>
       <script type="text/javascript" src="/vendor/jquery/dist/jquery.min.js"></script>
+      <script type="text/javascript" src="/vendor/urllite/browser-builds/standalone/urllite.min.js"></script>
+      <script type="text/javascript" src="/vendor/path-to-regexp/index.min.js"></script>
       <script type="text/javascript" src="/vendor/react/react-with-addons.min.js"></script>
+      <script type="text/javascript" src="/vendor/react-mini-router/dist/react-mini-router.min.js"></script>
       <script type="text/javascript" src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
       <script type="text/javascript" src="/javascripts/app.min.js"></script>
     {{ else }}
       <script type="text/javascript" src="/vendor/lodash/dist/lodash.js"></script>
       <script type="text/javascript" src="/vendor/jquery/dist/jquery.js"></script>
+      <script type="text/javascript" src="/vendor/urllite/browser-builds/standalone/urllite.js"></script>
+      <script type="text/javascript" src="/vendor/path-to-regexp/index.js"></script>
       <script type="text/javascript" src="/vendor/react/react-with-addons.js"></script>
+      <script type="text/javascript" src="/vendor/react-mini-router/dist/react-mini-router.js"></script>
       <script type="text/javascript" src="/vendor/bootstrap/dist/js/bootstrap.js"></script>
       <script type="text/javascript" src="/javascripts/app.js"></script>
     {{ end }}

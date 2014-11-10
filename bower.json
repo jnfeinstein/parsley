@@ -5,6 +5,7 @@
     "jquery": "*",
     "lodash": "*",
     "bootstrap": "*",
-    "react": "*"
+    "react": "*",
+    "react-mini-router": "~1.0.0"
   }
 }
