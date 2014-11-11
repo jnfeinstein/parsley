@@ -1,8 +1,6 @@
 package models
 
-import (
-	"parsley/internals"
-)
+import ()
 
 type IngredientSupplier struct {
 	Id           int64 `json:"id"`
@@ -14,8 +12,4 @@ type IngredientSupplier struct {
 	Unit string `json:"purchase_unit"`
 	// number of Ingredient default units per purchase unit
 	UnitConversion float64 `json:"unit_conversion"`
-}
-
-func init() {
-	internals.RegisterModel(IngredientSupplier{})
 }

@@ -2,7 +2,6 @@ package models
 
 import (
 	"parsley/db"
-	"parsley/internals"
 	"time"
 )
 
@@ -21,8 +20,4 @@ func NewUser(emailAddresses []string, conn db.Connection) *User {
 	}
 	conn.Save(&user)
 	return &user
-}
-
-func init() {
-	internals.RegisterModel(User{})
 }
