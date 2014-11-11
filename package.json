@@ -5,10 +5,11 @@
   "dependencies": {
     "bower": "*",
     "grunt": "*",
-    "grunt-contrib-compass": "*",
     "grunt-contrib-clean": "*",
+    "grunt-contrib-compass": "*",
     "grunt-contrib-uglify": "*",
-    "grunt-react": "*"
+    "grunt-react": "*",
+    "load-grunt-tasks": "*"
   },
   "devDependencies": {
     "grunt-contrib-watch": "*"
