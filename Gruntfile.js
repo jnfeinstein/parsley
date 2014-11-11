@@ -77,6 +77,6 @@ module.exports = function(grunt) {
   require('load-grunt-tasks')(grunt);
 
   grunt.registerTask('default', ['clean', 'react', 'uglify', 'compass']);
-  grunt.registerTask('heroku', ['clean', 'uglify', 'compass']);
+  grunt.registerTask('heroku', ['default']);
 
 };
