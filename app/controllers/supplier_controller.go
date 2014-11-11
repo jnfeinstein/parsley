@@ -12,7 +12,7 @@ import (
 
 type SuppliersController struct{}
 
-func (s SuppliersController) Initialize(m *martini.ClassicMartini) {
+func (sc SuppliersController) Initialize(m *martini.ClassicMartini) {
 
 	m.Get("/suppliers/list", func(r render.Render, conn *db.Connection) {
 		suppliers := []models.Supplier{}
