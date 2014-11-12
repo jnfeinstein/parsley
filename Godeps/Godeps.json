@@ -3,19 +3,26 @@
 	"GoVersion": "go1.3.3",
 	"Deps": [
 		{
+			"ImportPath": "bitbucket.org/liamstask/goose/cmd/goose",
+			"Rev": "a72c5a598e6d2460e918893e48e24e4d5f27c981"
+		},
+		{
+			"ImportPath": "bitbucket.org/liamstask/goose/lib/goose",
+			"Rev": "a72c5a598e6d2460e918893e48e24e4d5f27c981"
+		},
+		{
+			"ImportPath": "github.com/boj/redistore",
+			"Comment": "v1",
+			"Rev": "9d1554b400d726c7aa54b6e4a836f273b72b97f7"
+		},
+		{
 			"ImportPath": "github.com/codegangsta/inject",
 			"Comment": "v1.0-rc1-4-g4b81725",
 			"Rev": "4b8172520a03fa190f427bbd284db01b459bfce7"
 		},
 		{
-			"ImportPath": "github.com/codegangsta/martini",
-			"Comment": "v1.0-50-g7d32ea3",
-			"Rev": "7d32ea3fa6590565c928b90a48178b60b96df98f"
-		},
-		{
-			"ImportPath": "github.com/codegangsta/martini-contrib/binding",
-			"Comment": "v0.1-159-g8ce6181",
-			"Rev": "8ce6181c2609699e4c7cd30994b76a850a9cdadc"
+			"ImportPath": "github.com/garyburd/redigo/redis",
+			"Rev": "c28da76eaf56cdd30fb653a3e4e2478ef0bb133d"
 		},
 		{
 			"ImportPath": "github.com/go-martini/martini",
@@ -28,8 +35,29 @@
 			"Rev": "9543750295406ef070f7de8ae9c43ccddd44e15e"
 		},
 		{
+			"ImportPath": "github.com/golang/oauth2",
+			"Rev": "49f48241375b4eb4af286b35b80a6d1372ff05c3"
+		},
+		{
+			"ImportPath": "github.com/gorilla/context",
+			"Rev": "14f550f51af52180c2eefed15e5fd18d63c0a64a"
+		},
+		{
+			"ImportPath": "github.com/gorilla/securecookie",
+			"Rev": "1b0c7f6e9ab3d7f500fd7d50c7ad835ff428139b"
+		},
+		{
+			"ImportPath": "github.com/gorilla/sessions",
+			"Rev": "aa5e036e6c44aec69a32eb41097001978b29ad31"
+		},
+		{
 			"ImportPath": "github.com/jinzhu/gorm",
 			"Rev": "a29ac54e484be3c027d28090b59118be79dd4864"
+		},
+		{
+			"ImportPath": "github.com/kylelemons/go-gypsy/yaml",
+			"Comment": "go.weekly.2011-11-02-17-g0ddb27c",
+			"Rev": "0ddb27ce74ade2ca988ec85587d636e10312dfc6"
 		},
 		{
 			"ImportPath": "github.com/lib/pq",
@@ -40,8 +68,16 @@
 			"Rev": "f8b0843aa3ab66d8734aa7d9acf399bdc197c65d"
 		},
 		{
+			"ImportPath": "github.com/martini-contrib/oauth2",
+			"Rev": "3eced323e6a648c9f968f497c4711719984477ef"
+		},
+		{
 			"ImportPath": "github.com/martini-contrib/render",
 			"Rev": "b65063311fac6cbf84d3538f5715f7847e648322"
+		},
+		{
+			"ImportPath": "github.com/martini-contrib/sessions",
+			"Rev": "fa13114fbcf036dff8185d728651d85fcef772db"
 		},
 		{
 			"ImportPath": "github.com/mattn/go-sqlite3",
@@ -63,6 +99,21 @@
 		{
 			"ImportPath": "github.com/yvasiyarov/newrelic_platform_go",
 			"Rev": "b21fdbd4370f3717f3bbd2bf41c223bc273068e6"
+		},
+		{
+			"ImportPath": "github.com/ziutek/mymysql/godrv",
+			"Comment": "v1.5.3-21-g261574e",
+			"Rev": "261574e2f4a9d9d2d81a8f996105c8c835bfe19b"
+		},
+		{
+			"ImportPath": "github.com/ziutek/mymysql/mysql",
+			"Comment": "v1.5.3-21-g261574e",
+			"Rev": "261574e2f4a9d9d2d81a8f996105c8c835bfe19b"
+		},
+		{
+			"ImportPath": "github.com/ziutek/mymysql/native",
+			"Comment": "v1.5.3-21-g261574e",
+			"Rev": "261574e2f4a9d9d2d81a8f996105c8c835bfe19b"
 		}
 	]
 }
