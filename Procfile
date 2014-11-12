@@ -1,1 +1,1 @@
-web: parsley
+web: parsley -env production

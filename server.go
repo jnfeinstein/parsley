@@ -21,14 +21,14 @@ func main() {
 
 	flag.Parse()
 
+	m := martini.Classic()
+	config.Initialize(m)
+
 	if config.Development() {
 		fmt.Println("Running in debug environment")
 	} else {
 		fmt.Println("Running in production environment")
 	}
-
-	m := martini.Classic()
-	config.Initialize(m)
 
 	conn, err := db.NewConnection()
 	if err != nil {
