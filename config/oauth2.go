@@ -7,6 +7,6 @@ import (
 var GoogleOAuthConfig = gooauth2.Options{
 	ClientID:     "242182491314-3kv6lg5gbqi3tcfp42fr2s1kvqkg09ih.apps.googleusercontent.com",
 	ClientSecret: "QJUY1sHMJhoZlJ6E10W9cJqz",
-	RedirectURL:  "http://localhost:3000/oauth2callback",
+	RedirectURL:  Url() + "/oauth2callback",
 	Scopes:       []string{"profile email"},
 }
