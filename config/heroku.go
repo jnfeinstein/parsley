@@ -11,8 +11,7 @@ import (
 
 const AppName = "parsley"
 const Heroku = true
-
-var PostgresArgs = os.Getenv("DATABASE_URL")
+const Environment = "production"
 
 func Initialize(m *martini.ClassicMartini) {
 	fmt.Println("Running in production environment")
