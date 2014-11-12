@@ -5,3 +5,4 @@ public/stylesheets
 .DS_Store
 tmp
 .sass-cache
+parsley
