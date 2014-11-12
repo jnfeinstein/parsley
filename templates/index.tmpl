@@ -2,8 +2,8 @@
 
 <link rel="stylesheet" href="/stylesheets/index.css">
 
-{{ if heroku }}
-  <script type="text/javascript" src="/javascripts/index.min.js"></script>
-{{ else }}
+{{ if development }}
   <script type="text/javascript" src="/javascripts/index.js"></script>
+{{ else }}
+  <script type="text/javascript" src="/javascripts/index.min.js"></script>
 {{ end }}

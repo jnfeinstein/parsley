@@ -1,6 +1,8 @@
 package main
 
 import (
+	"flag"
+	"fmt"
 	"github.com/go-martini/martini"
 	"github.com/martini-contrib/render"
 	"github.com/martini-contrib/sessions"
@@ -17,6 +19,14 @@ import (
 func main() {
 	runtime.GOMAXPROCS(runtime.NumCPU())
 
+	flag.Parse()
+
+	if config.Development() {
+		fmt.Println("Running in debug environment")
+	} else {
+		fmt.Println("Running in production environment")
+	}
+
 	m := martini.Classic()
 	config.Initialize(m)
 
@@ -29,9 +39,7 @@ func main() {
 	m.Use(render.Renderer(render.Options{
 		Funcs: []template.FuncMap{
 			{
-				"heroku": func() bool {
-					return config.Heroku
-				},
+				"development": config.Development,
 			},
 		},
 		Layout: "app",

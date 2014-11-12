@@ -44,7 +44,7 @@ type Connection struct {
 }
 
 func NewConnection() (*Connection, error) {
-	driver, err := newDBDriver("./db", config.Environment)
+	driver, err := newDBDriver("./db", config.Env())
 	if err != nil {
 		return nil, err
 	}
