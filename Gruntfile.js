@@ -29,6 +29,8 @@ module.exports = function(grunt) {
       },
       vendor: {
         files: {
+          'public/vendor/urllite/browser-builds/standalone/urllite.min.js': 'public/vendor/urllite/browser-builds/standalone/urllite.js',
+          'public/vendor/path-to-regexp/index.min.js': 'public/vendor/path-to-regexp/index.js'
         }
       }
     },
