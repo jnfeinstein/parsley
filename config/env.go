@@ -4,7 +4,7 @@ import (
 	"flag"
 )
 
-var flagEnv = flag.String("env", "development", "which DB environment to use")
+var flagEnv = flag.String("env", "development", "which environment to use")
 
 func Env() string {
 	return *flagEnv
