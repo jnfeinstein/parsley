@@ -4,4 +4,4 @@ development:
 
 production:
     driver: postgres
-    open: $DATABASE_URL
+    open: postgres://mpftmtihddbsfq:45aw5GFm4BJhSLrdRbBXbxa9Ol@ec2-54-204-39-187.compute-1.amazonaws.com:5432/d520ppedel9p9c
