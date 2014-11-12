@@ -3,14 +3,6 @@
 	"GoVersion": "go1.3.3",
 	"Deps": [
 		{
-			"ImportPath": "bitbucket.org/liamstask/goose/cmd/goose",
-			"Rev": "a72c5a598e6d2460e918893e48e24e4d5f27c981"
-		},
-		{
-			"ImportPath": "bitbucket.org/liamstask/goose/lib/goose",
-			"Rev": "a72c5a598e6d2460e918893e48e24e4d5f27c981"
-		},
-		{
 			"ImportPath": "github.com/boj/redistore",
 			"Comment": "v1",
 			"Rev": "9d1554b400d726c7aa54b6e4a836f273b72b97f7"
@@ -99,21 +91,6 @@
 		{
 			"ImportPath": "github.com/yvasiyarov/newrelic_platform_go",
 			"Rev": "b21fdbd4370f3717f3bbd2bf41c223bc273068e6"
-		},
-		{
-			"ImportPath": "github.com/ziutek/mymysql/godrv",
-			"Comment": "v1.5.3-21-g261574e",
-			"Rev": "261574e2f4a9d9d2d81a8f996105c8c835bfe19b"
-		},
-		{
-			"ImportPath": "github.com/ziutek/mymysql/mysql",
-			"Comment": "v1.5.3-21-g261574e",
-			"Rev": "261574e2f4a9d9d2d81a8f996105c8c835bfe19b"
-		},
-		{
-			"ImportPath": "github.com/ziutek/mymysql/native",
-			"Comment": "v1.5.3-21-g261574e",
-			"Rev": "261574e2f4a9d9d2d81a8f996105c8c835bfe19b"
 		}
 	]
 }
