@@ -1,7 +1,6 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 	"github.com/go-martini/martini"
 	"github.com/martini-contrib/render"
@@ -13,19 +12,22 @@ import (
 	"parsley/config"
 	"parsley/db"
 	"parsley/internals"
-	"runtime"
 )
 
-func main() {
-	runtime.GOMAXPROCS(runtime.NumCPU())
+var serverCmd = &Command{
+	Name:    "server",
+	Usage:   "",
+	Summary: "Run the main server",
+	Help:    `create extended help here...`,
+	Run:     serverRun,
+}
 
-	flag.Parse()
-
+func serverRun(cmd *Command, args ...string) {
 	m := martini.Classic()
 	config.Initialize(m)
 
 	if config.Development() {
-		fmt.Println("Running in debug environment")
+		fmt.Println("Running in development environment")
 	} else {
 		fmt.Println("Running in production environment")
 	}

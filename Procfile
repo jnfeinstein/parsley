@@ -1,1 +1,1 @@
-web: parsley -env production
+web: parsley -env production server
