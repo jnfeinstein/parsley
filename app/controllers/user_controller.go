@@ -4,7 +4,12 @@ import (
 	"github.com/go-martini/martini"
 	gooauth2 "github.com/golang/oauth2"
 	"github.com/martini-contrib/oauth2"
+	"github.com/martini-contrib/render"
+	"github.com/martini-contrib/sessions"
+	"parsley/app/handlers"
+	. "parsley/app/models"
 	"parsley/config"
+	"parsley/db"
 	"parsley/internals"
 )
 
@@ -17,6 +22,12 @@ func (u *UserController) Initialize(m *martini.ClassicMartini) {
 		RedirectURL:  config.Url() + "/oauth2callback",
 		Scopes:       []string{"profile email"},
 	}))
+
+	m.Get("/user/me", handlers.UserRequired, func(conn db.Connection, s sessions.Session, r render.Render) {
+		var user User
+		conn.First(&user, s.Get("user_id")).Association("Organizations").Find(&user.Organizations)
+		r.JSON(200, user)
+	})
 }
 
 func init() {

@@ -6,12 +6,13 @@ import (
 )
 
 type User struct {
-	Id        int64
-	Emails    []Email   `json:"emails"`
-	FirstName string    `sql:"size:255"`
-	LastName  string    `sql:"size:255"`
-	CreatedAt time.Time `json:"createdAt"`
-	UpdatedAt time.Time `json:"updatedAt"`
+	Id            int64
+	Emails        []Email        `json:"emails"`
+	Organizations []Organization `gorm:"many2many:users_organizations;"`
+	FirstName     string         `sql:"size:255"`
+	LastName      string         `sql:"size:255"`
+	CreatedAt     time.Time      `json:"createdAt"`
+	UpdatedAt     time.Time      `json:"updatedAt"`
 }
 
 func NewUser(conn db.Connection, emailAddresses []string, first string, last string) *User {
