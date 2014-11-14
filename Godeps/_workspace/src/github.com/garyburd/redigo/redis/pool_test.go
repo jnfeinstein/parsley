@@ -12,21 +12,22 @@
 // License for the specific language governing permissions and limitations
 // under the License.
 
-package redis
+package redis_test
 
 import (
 	"io"
-	"net/textproto"
 	"reflect"
-	"sync"
 	"testing"
 	"time"
+
+	"github.com/garyburd/redigo/internal/redistest"
+	"github.com/garyburd/redigo/redis"
 )
 
 type poolTestConn struct {
 	d   *poolDialer
 	err error
-	Conn
+	redis.Conn
 }
 
 func (c *poolTestConn) Close() error { c.d.open -= 1; return nil }
@@ -53,17 +54,17 @@ type poolDialer struct {
 	commands     []string
 }
 
-func (d *poolDialer) dial() (Conn, error) {
+func (d *poolDialer) dial() (redis.Conn, error) {
 	d.open += 1
 	d.dialed += 1
-	c, err := DialTestDB()
+	c, err := redistest.Dial()
 	if err != nil {
 		return nil, err
 	}
 	return &poolTestConn{d: d, Conn: c}, nil
 }
 
-func (d *poolDialer) check(message string, p *Pool, dialed, open int) {
+func (d *poolDialer) check(message string, p *redis.Pool, dialed, open int) {
 	if d.dialed != dialed {
 		d.t.Errorf("%s: dialed=%d, want %d", message, d.dialed, dialed)
 	}
@@ -77,7 +78,7 @@ func (d *poolDialer) check(message string, p *Pool, dialed, open int) {
 
 func TestPoolReuse(t *testing.T) {
 	d := poolDialer{t: t}
-	p := &Pool{
+	p := &redis.Pool{
 		MaxIdle: 2,
 		Dial:    d.dial,
 	}
@@ -98,7 +99,7 @@ func TestPoolReuse(t *testing.T) {
 
 func TestPoolMaxIdle(t *testing.T) {
 	d := poolDialer{t: t}
-	p := &Pool{
+	p := &redis.Pool{
 		MaxIdle: 2,
 		Dial:    d.dial,
 	}
@@ -120,7 +121,7 @@ func TestPoolMaxIdle(t *testing.T) {
 
 func TestPoolError(t *testing.T) {
 	d := poolDialer{t: t}
-	p := &Pool{
+	p := &redis.Pool{
 		MaxIdle: 2,
 		Dial:    d.dial,
 	}
@@ -141,7 +142,7 @@ func TestPoolError(t *testing.T) {
 
 func TestPoolClose(t *testing.T) {
 	d := poolDialer{t: t}
-	p := &Pool{
+	p := &redis.Pool{
 		MaxIdle: 2,
 		Dial:    d.dial,
 	}
@@ -181,15 +182,15 @@ func TestPoolClose(t *testing.T) {
 
 func TestPoolTimeout(t *testing.T) {
 	d := poolDialer{t: t}
-	p := &Pool{
+	p := &redis.Pool{
 		MaxIdle:     2,
 		IdleTimeout: 300 * time.Second,
 		Dial:        d.dial,
 	}
 
 	now := time.Now()
-	nowFunc = func() time.Time { return now }
-	defer func() { nowFunc = time.Now }()
+	redis.SetNowFunc(func() time.Time { return now })
+	defer redis.SetNowFunc(time.Now)
 
 	c := p.Get()
 	c.Do("PING")
@@ -209,8 +210,8 @@ func TestPoolTimeout(t *testing.T) {
 }
 
 func TestPoolConcurrenSendReceive(t *testing.T) {
-	p := &Pool{
-		Dial: DialTestDB,
+	p := &redis.Pool{
+		Dial: redistest.Dial,
 	}
 	c := p.Get()
 	done := make(chan error, 1)
@@ -234,10 +235,10 @@ func TestPoolConcurrenSendReceive(t *testing.T) {
 
 func TestPoolBorrowCheck(t *testing.T) {
 	d := poolDialer{t: t}
-	p := &Pool{
+	p := &redis.Pool{
 		MaxIdle:      2,
 		Dial:         d.dial,
-		TestOnBorrow: func(Conn, time.Time) error { return Error("BLAH") },
+		TestOnBorrow: func(redis.Conn, time.Time) error { return redis.Error("BLAH") },
 	}
 
 	for i := 0; i < 10; i++ {
@@ -251,7 +252,7 @@ func TestPoolBorrowCheck(t *testing.T) {
 
 func TestPoolMaxActive(t *testing.T) {
 	d := poolDialer{t: t}
-	p := &Pool{
+	p := &redis.Pool{
 		MaxIdle:   2,
 		MaxActive: 2,
 		Dial:      d.dial,
@@ -264,7 +265,7 @@ func TestPoolMaxActive(t *testing.T) {
 	d.check("1", p, 2, 2)
 
 	c3 := p.Get()
-	if _, err := c3.Do("PING"); err != ErrPoolExhausted {
+	if _, err := c3.Do("PING"); err != redis.ErrPoolExhausted {
 		t.Errorf("expected pool exhausted")
 	}
 
@@ -285,7 +286,7 @@ func TestPoolMaxActive(t *testing.T) {
 
 func TestPoolMonitorCleanup(t *testing.T) {
 	d := poolDialer{t: t}
-	p := &Pool{
+	p := &redis.Pool{
 		MaxIdle:   2,
 		MaxActive: 2,
 		Dial:      d.dial,
@@ -300,7 +301,7 @@ func TestPoolMonitorCleanup(t *testing.T) {
 
 func TestPoolPubSubCleanup(t *testing.T) {
 	d := poolDialer{t: t}
-	p := &Pool{
+	p := &redis.Pool{
 		MaxIdle:   2,
 		MaxActive: 2,
 		Dial:      d.dial,
@@ -331,7 +332,7 @@ func TestPoolPubSubCleanup(t *testing.T) {
 
 func TestPoolTransactionCleanup(t *testing.T) {
 	d := poolDialer{t: t}
-	p := &Pool{
+	p := &redis.Pool{
 		MaxIdle:   2,
 		MaxActive: 2,
 		Dial:      d.dial,
@@ -403,7 +404,7 @@ func TestPoolTransactionCleanup(t *testing.T) {
 
 func BenchmarkPoolGet(b *testing.B) {
 	b.StopTimer()
-	p := Pool{Dial: DialTestDB, MaxIdle: 2}
+	p := redis.Pool{Dial: redistest.Dial, MaxIdle: 2}
 	c := p.Get()
 	if err := c.Err(); err != nil {
 		b.Fatal(err)
@@ -419,7 +420,7 @@ func BenchmarkPoolGet(b *testing.B) {
 
 func BenchmarkPoolGetErr(b *testing.B) {
 	b.StopTimer()
-	p := Pool{Dial: DialTestDB, MaxIdle: 2}
+	p := redis.Pool{Dial: redistest.Dial, MaxIdle: 2}
 	c := p.Get()
 	if err := c.Err(); err != nil {
 		b.Fatal(err)
@@ -438,7 +439,7 @@ func BenchmarkPoolGetErr(b *testing.B) {
 
 func BenchmarkPoolGetPing(b *testing.B) {
 	b.StopTimer()
-	p := Pool{Dial: DialTestDB, MaxIdle: 2}
+	p := redis.Pool{Dial: redistest.Dial, MaxIdle: 2}
 	c := p.Get()
 	if err := c.Err(); err != nil {
 		b.Fatal(err)
@@ -453,80 +454,4 @@ func BenchmarkPoolGetPing(b *testing.B) {
 		}
 		c.Close()
 	}
-}
-
-const numConcurrent = 10
-
-func BenchmarkPipelineConcurrency(b *testing.B) {
-	b.StopTimer()
-	c, err := DialTestDB()
-	if err != nil {
-		b.Fatalf("error connection to database, %v", err)
-	}
-	defer c.Close()
-
-	var wg sync.WaitGroup
-	wg.Add(numConcurrent)
-
-	var pipeline textproto.Pipeline
-
-	b.StartTimer()
-
-	for i := 0; i < numConcurrent; i++ {
-		go func() {
-			defer wg.Done()
-			for i := 0; i < b.N; i++ {
-				id := pipeline.Next()
-				pipeline.StartRequest(id)
-				c.Send("PING")
-				c.Flush()
-				pipeline.EndRequest(id)
-				pipeline.StartResponse(id)
-				_, err := c.Receive()
-				if err != nil {
-					b.Fatal(err)
-				}
-				c.Flush()
-				pipeline.EndResponse(id)
-			}
-		}()
-	}
-	wg.Wait()
-}
-
-func BenchmarkPoolConcurrency(b *testing.B) {
-	b.StopTimer()
-
-	p := Pool{Dial: DialTestDB, MaxIdle: numConcurrent}
-	defer p.Close()
-
-	// fill the pool
-	conns := make([]Conn, numConcurrent)
-	for i := range conns {
-		c := p.Get()
-		if err := c.Err(); err != nil {
-			b.Fatal(err)
-		}
-		conns[i] = c
-	}
-	for _, c := range conns {
-		c.Close()
-	}
-
-	var wg sync.WaitGroup
-	wg.Add(numConcurrent)
-
-	b.StartTimer()
-
-	for i := 0; i < numConcurrent; i++ {
-		go func() {
-			defer wg.Done()
-			for i := 0; i < b.N; i++ {
-				c := p.Get()
-				c.Do("PING")
-				c.Close()
-			}
-		}()
-	}
-	wg.Wait()
 }
