@@ -6,3 +6,4 @@ public/stylesheets
 tmp
 .sass-cache
 parsley
+.wercker
