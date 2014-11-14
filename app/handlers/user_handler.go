@@ -2,8 +2,8 @@ package handlers
 
 import (
 	"encoding/json"
+	"github.com/asazernik/oauth2"
 	"github.com/go-martini/martini"
-	"github.com/martini-contrib/oauth2"
 	"github.com/martini-contrib/sessions"
 	"io/ioutil"
 	"log"
@@ -49,7 +49,7 @@ func fetchGoogleProfile(accessToken string) *googleProfile {
 }
 
 func UserRequired(conn db.Connection, w http.ResponseWriter, r *http.Request, tokens oauth2.Tokens, s sessions.Session, c martini.Context) {
-	if tokens.IsExpired() {
+	if tokens.Expired() {
 		http.Error(w, "Unauthorized", http.StatusForbidden)
 	}
 	var user User

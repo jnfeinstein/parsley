@@ -2,9 +2,9 @@ package controllers
 
 import (
 	"fmt"
+	"github.com/asazernik/oauth2"
 	"github.com/go-martini/martini"
-	gooauth2 "github.com/golang/oauth2"
-	"github.com/martini-contrib/oauth2"
+	goauth2 "github.com/golang/oauth2"
 	"github.com/martini-contrib/render"
 	"github.com/martini-contrib/sessions"
 	"net/http"
@@ -18,12 +18,11 @@ import (
 type UserController struct{}
 
 func (u *UserController) Initialize(m *martini.ClassicMartini) {
-	m.Use(oauth2.Google(&gooauth2.Options{
-		ClientID:     "242182491314-3kv6lg5gbqi3tcfp42fr2s1kvqkg09ih.apps.googleusercontent.com",
-		ClientSecret: "QJUY1sHMJhoZlJ6E10W9cJqz",
-		RedirectURL:  config.Url() + "/oauth2callback",
-		Scopes:       []string{"profile email"},
-	}))
+	m.Use(oauth2.Google(
+		goauth2.Client("242182491314-3kv6lg5gbqi3tcfp42fr2s1kvqkg09ih.apps.googleusercontent.com", "QJUY1sHMJhoZlJ6E10W9cJqz"),
+		goauth2.RedirectURL(config.Url()+"/oauth2callback"),
+		goauth2.Scope("profile", "email"),
+	))
 
 	m.Get("/user/me", handlers.UserRequired, func(conn db.Connection, s sessions.Session, r render.Render) {
 		var user User
