@@ -3,6 +3,7 @@ package controllers
 import (
 	"github.com/go-martini/martini"
 	"github.com/martini-contrib/oauth2"
+	"github.com/martini-contrib/render"
 	"parsley/app/handlers"
 	"parsley/internals"
 )
@@ -10,8 +11,8 @@ import (
 type ParsleyController struct{}
 
 func (i *ParsleyController) Initialize(m *martini.ClassicMartini) {
-	m.Get("/parsley", oauth2.LoginRequired, handlers.UserRequired, func(tokens oauth2.Tokens) {
-
+	m.Get("/parsley.*", oauth2.LoginRequired, handlers.UserRequired, func(r render.Render, tokens oauth2.Tokens) {
+		r.HTML(200, "parsley", nil)
 	})
 }
 

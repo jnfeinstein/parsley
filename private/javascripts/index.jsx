@@ -20,14 +20,15 @@ var AppComponent = React.createClass({
   mixins: [RouterMixin],
   routes: {
     '/': 'welcome',
-    '/about': 'about',
-    '/contact': 'contact'
+    '/index': 'welcome',
+    '/index/about': 'about',
+    '/index/contact': 'contact'
   },
   render: function() {
     var routes = {
       left: [
-        {href: '/about', title: 'About'},
-        {href: '/contact', title: 'Contact'}
+        {href: '/index/about', title: 'About'},
+        {href: '/index/contact', title: 'Contact'}
       ],
       right: [
         {href: '/parsley', title: 'Sign up'},
@@ -37,7 +38,7 @@ var AppComponent = React.createClass({
 
     return (
       <div>
-        <NavbarComponent routes={routes} id="main-nav" />
+        <NavbarComponent routes={routes} id="main-nav" brandUrl="/" />
         {this.renderCurrentRoute()}
       </div>
     );

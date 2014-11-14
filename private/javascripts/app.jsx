@@ -20,6 +20,18 @@ var NavItem = React.createClass({
   }
 });
 
+var NavSearch = React.createClass({
+  render: function() {
+    return (
+      <form className="navbar-form navbar-left" role="search">
+        <div className="form-group">
+          <input type="text" className="form-control" placeholder="Search" />
+        </div>
+      </form>
+    );
+  }
+});
+
 var NavbarComponent = React.createClass({
   render: function() {
     var leftNav = _.map(this.props.routes.left, function(link) {
@@ -29,6 +41,8 @@ var NavbarComponent = React.createClass({
     var rightNav = _.map(this.props.routes.right, function(link) {
       return <NavItem key={link.title} href={link.href} title={link.title} />;
     });
+
+    var searchBox = this.props.search ? <NavSearch /> : '';
 
     return (
       <nav className="navbar navbar-default" role="navigation">
@@ -40,13 +54,14 @@ var NavbarComponent = React.createClass({
               <span className="icon-bar"></span>
               <span className="icon-bar"></span>
             </button>
-            <a className="navbar-brand" href="/">Parsley</a>
+            <a className="navbar-brand" href={this.props.brandUrl}>Parsley</a>
           </div>
 
           <div className="collapse navbar-collapse" id={this.props.id}>
             <ul className="nav navbar-nav">
               {leftNav}
             </ul>
+            {searchBox}
             <ul className="nav navbar-nav navbar-right">
               {rightNav}
             </ul>
