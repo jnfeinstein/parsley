@@ -1,1 +1,5 @@
 box: yosssi/golang-latest@1.0.7
+deploy:
+    steps:
+        - heroku-deploy:
+            key-name: WERCKER_HEROKU_DEPLOY_KEY_NAME
