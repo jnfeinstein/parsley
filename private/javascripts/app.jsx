@@ -15,7 +15,7 @@ $.postJSON = function(url, data) {
 var NavItem = React.createClass({
   render: function() {
     return (
-      <li><a href={this.props.href}>{this.props.title}</a></li>
+      <li><a href={this.props.href} onClick={this.props.onClick}>{this.props.title}</a></li>
     );
   }
 });
@@ -35,11 +35,11 @@ var NavSearch = React.createClass({
 var NavbarComponent = React.createClass({
   render: function() {
     var leftNav = _.map(this.props.routes.left, function(link) {
-      return <NavItem key={link.title} href={link.href} title={link.title} />;
+      return <NavItem key={link.title} href={link.href} title={link.title} onClick={link.onClick} />;
     });
 
     var rightNav = _.map(this.props.routes.right, function(link) {
-      return <NavItem key={link.title} href={link.href} title={link.title} />;
+      return <NavItem key={link.title} href={link.href} title={link.title} onClick={link.onClick} />;
     });
 
     var searchBox = this.props.search ? <NavSearch /> : '';

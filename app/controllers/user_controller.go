@@ -1,11 +1,13 @@
 package controllers
 
 import (
+	"fmt"
 	"github.com/go-martini/martini"
 	gooauth2 "github.com/golang/oauth2"
 	"github.com/martini-contrib/oauth2"
 	"github.com/martini-contrib/render"
 	"github.com/martini-contrib/sessions"
+	"net/http"
 	"parsley/app/handlers"
 	. "parsley/app/models"
 	"parsley/config"
@@ -27,6 +29,10 @@ func (u *UserController) Initialize(m *martini.ClassicMartini) {
 		var user User
 		conn.First(&user, s.Get("user_id")).Association("Organizations").Find(&user.Organizations)
 		r.JSON(200, user)
+	})
+
+	m.Get("/loggedin", oauth2.LoginRequired, func(w http.ResponseWriter) {
+		fmt.Fprintf(w, "You will be redirected soon...")
 	})
 }
 

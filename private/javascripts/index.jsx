@@ -1,5 +1,28 @@
 /** @jsx React.DOM */
 
+function popupWindow(url, title, w, h) {
+  var left = (screen.width/2)-(w/2);
+  var top = (screen.height/2)-(h/2);
+  return window.open(url, title, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width='+w+', height='+h+', top='+top+', left='+left);
+}
+
+function login() {
+  var win = popupWindow("/loggedin", "Parsley", 800, 600);
+  var pollInterval = setInterval(function() {
+    try {
+      if (win.document.URL.indexOf('loggedin')) {
+        win.close();
+        window.location.href = "/parsley";
+      }
+    } catch(e) {
+
+    }
+  }, 500);
+  win.onClose = function() {
+    clearInterval(pollInterval);
+  };
+}
+
 var WelcomeComponent = React.createClass({
   render: function() {
     return (
@@ -31,8 +54,8 @@ var AppComponent = React.createClass({
         {href: '/index/contact', title: 'Contact'}
       ],
       right: [
-        {href: '/parsley', title: 'Sign up'},
-        {href: '/parsley', title: 'Login'}
+        {href: '#', title: 'Sign up', onClick: login},
+        {href: '#', title: 'Login', onClick: login}
       ]
     };
 
