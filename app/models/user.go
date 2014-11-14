@@ -8,13 +8,14 @@ import (
 type User struct {
 	Id        int64
 	Emails    []Email   `json:"emails"`
-	Name      string    `sql:"size:255"`
+	FirstName string    `sql:"size:255"`
+	LastName  string    `sql:"size:255"`
 	CreatedAt time.Time `json:"createdAt"`
 	UpdatedAt time.Time `json:"updatedAt"`
 }
 
-func NewUser(emailAddresses []string, conn db.Connection) *User {
-	user := User{Emails: []Email{}}
+func NewUser(conn db.Connection, emailAddresses []string, first string, last string) *User {
+	user := User{Emails: []Email{}, FirstName: first, LastName: last}
 	for _, email := range emailAddresses {
 		user.Emails = append(user.Emails, Email{Address: email})
 	}

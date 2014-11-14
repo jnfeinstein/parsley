@@ -2,7 +2,8 @@
 CREATE TABLE users
 (
   id BIGSERIAL PRIMARY KEY,
-  name VARCHAR(255),
+  first_name VARCHAR(255),
+  last_name VARCHAR(255),
   created_at TIMESTAMP,
   updated_at TIMESTAMP
 );
