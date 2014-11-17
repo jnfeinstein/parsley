@@ -7,6 +7,11 @@ function popupWindow(url, title, w, h) {
 }
 
 function login() {
+  if (isMobile.any()) {
+    window.location.href = "/parsley";
+    return;
+  }
+
   var win = popupWindow("/loggedin", "Parsley", 800, 600);
   var pollInterval = setInterval(function() {
     try {
