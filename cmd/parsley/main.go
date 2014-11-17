@@ -10,6 +10,7 @@ import (
 
 var commands = []*Command{
 	serverCmd,
+	migrateCmd,
 }
 
 func main() {
