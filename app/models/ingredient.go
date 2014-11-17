@@ -2,6 +2,7 @@ package models
 
 import (
 	"database/sql"
+	"parsley/internals"
 )
 
 type Ingredient struct {
@@ -12,4 +13,8 @@ type Ingredient struct {
 	SuppliedById sql.NullInt64
 	// TODO: Add actual unit measurements
 	Unit string `json:"unit_name"`
+}
+
+func init() {
+	internals.RegisterModel(Ingredient{})
 }
