@@ -54,27 +54,36 @@ func UserRequired(conn db.Connection, w http.ResponseWriter, r *http.Request, to
 	}
 	var user User
 	userId := s.Get("user_id")
+
 	// Check if user exists
-	if userId != nil && conn.First(&user, userId).Error != nil {
-		userId = nil
+	if userId != nil && conn.First(&user, userId).Error == nil {
+		// Valid user
+		return
 	}
-	// If user doesn't exist, make a new user
-	if userId == nil {
-		if profile := fetchGoogleProfile(tokens.Access()); profile != nil {
-			emails := []Email{}
-			conn.Where("address in (?)", profile.EmailAddresses()).Find(&emails)
-			if len(emails) > 0 {
-				s.Set("user_id", emails[0].UserId)
-			} else {
-				newUser, err := NewUser(conn, profile.EmailAddresses(), profile.Name.First, profile.Name.Last)
-				if err != nil {
-					http.Error(w, "Error creating new user", http.StatusInternalServerError)
-					log.Panic(err.Error())
-				}
-				s.Set("user_id", newUser.Id)
-			}
-		} else {
-			http.Error(w, "Error communicating with Google", http.StatusInternalServerError)
-		}
+	// Try to pull profile from Google
+	profile := fetchGoogleProfile(tokens.Access())
+	if profile == nil {
+		http.Error(w, "Error communicating with Google", http.StatusInternalServerError)
+		return
 	}
+	// Fetch emails from db that match the Google user
+	var emails []Email
+	if err := conn.Where("address in (?)", profile.EmailAddresses()).Find(&emails).Error; err != nil {
+		http.Error(w, "Error looking up user", http.StatusInternalServerError)
+		log.Panic(err.Error())
+		return
+	}
+	if len(emails) > 0 {
+		// User already has an account
+		s.Set("user_id", emails[0].UserId)
+		return
+	}
+	// This is a new user
+	newUser, err := NewUser(conn, profile.EmailAddresses(), profile.Name.First, profile.Name.Last)
+	if err != nil {
+		http.Error(w, "Error creating new user", http.StatusInternalServerError)
+		log.Panic(err.Error())
+		return
+	}
+	s.Set("user_id", newUser.Id)
 }
