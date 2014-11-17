@@ -15,11 +15,13 @@ type User struct {
 	UpdatedAt     time.Time      `json:"updatedAt"`
 }
 
-func NewUser(conn db.Connection, emailAddresses []string, first string, last string) *User {
+func NewUser(conn db.Connection, emailAddresses []string, first string, last string) (*User, error) {
 	user := User{Emails: []Email{}, FirstName: first, LastName: last}
 	for _, email := range emailAddresses {
 		user.Emails = append(user.Emails, Email{Address: email})
 	}
-	conn.Save(&user)
-	return &user
+	if err := conn.Save(&user).Error; err != nil {
+		return nil, err
+	}
+	return &user, nil
 }

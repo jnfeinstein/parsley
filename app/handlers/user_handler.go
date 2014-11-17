@@ -66,8 +66,12 @@ func UserRequired(conn db.Connection, w http.ResponseWriter, r *http.Request, to
 			if len(emails) > 0 {
 				s.Set("user_id", emails[0].UserId)
 			} else {
-				user := NewUser(conn, profile.EmailAddresses(), profile.Name.First, profile.Name.Last)
-				s.Set("user_id", user.Id)
+				newUser, err := NewUser(conn, profile.EmailAddresses(), profile.Name.First, profile.Name.Last)
+				if err != nil {
+					http.Error(w, "Error creating new user", http.StatusInternalServerError)
+					log.Panic(err.Error())
+				}
+				s.Set("user_id", newUser.Id)
 			}
 		} else {
 			http.Error(w, "Error communicating with Google", http.StatusInternalServerError)
