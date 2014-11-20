@@ -1,8 +1,6 @@
 /** @jsx React.DOM */
 
-var RouterMixin = ReactMiniRouter.RouterMixin;
-
-var isMobile = {
+window.isMobile = {
     Android: function() {
         return navigator.userAgent.match(/Android/i);
     },
@@ -33,7 +31,7 @@ $.postJSON = function(url, data) {
   });
 }
 
-var NavItem = React.createClass({
+window.NavItem = React.createClass({
   render: function() {
     return (
       <li><a href={this.props.href} onClick={this.props.onClick}>{this.props.title}</a></li>
@@ -41,7 +39,7 @@ var NavItem = React.createClass({
   }
 });
 
-var NavSearch = React.createClass({
+window.NavSearch = React.createClass({
   render: function() {
     return (
       <form className="navbar-form navbar-left" role="search">
@@ -53,7 +51,7 @@ var NavSearch = React.createClass({
   }
 });
 
-var NavbarComponent = React.createClass({
+window.NavbarComponent = React.createClass({
   render: function() {
     var leftNav = _.map(this.props.routes.left, function(link) {
       return <NavItem key={link.title} href={link.href} title={link.title} onClick={link.onClick} />;
