@@ -1,13 +1,19 @@
 div.sidebar-container {
 	background-color: lightyellow;
-	display: inline-block;
-	width: 10%;
-
-	.nav-header {
-		font-size: 1.2em;
-	}
+	float: left;
+	margin-right: 20px;
 }
 
 div.app-container {
-	display: inline-block;
+	float: left;
+}
+
+li.create-new a {
+	font-weight: bold;
+}
+
+div.organization-editor-container {
+	table.edit-table tbody td {
+		padding-bottom: 1em;
+	}
 }

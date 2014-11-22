@@ -1,11 +1,15 @@
 require('./pack');
 
+var Fluxbone = require('./lib').Fluxbone;
+
 var UserModel = require('./models').User;
 var OrganizationModel = require('./models').Organization;
 
 var DashboardComponent = require('./components').Dashboard;
-var OrganizationComponent = require('./components').Organization;
+var OrganizationComponent = require('./components').Organization.Component;
+var OrganizationEditorComponent = require('./components').Organization.EditorComponent;
 var SidebarComponent = require('./components').Sidebar;
+var ErrorComponent = require('./components').Error;
 
 window.basepath = '/parsley';
 
@@ -19,16 +23,8 @@ var LoadingComponet = React.createClass({
   }
 });
 
-var ErrorComponent = React.createClass({
-  render: function() {
-    return (
-      <div>{this.props.message}</div>
-    );
-  }
-});
-
 var AppComponent = React.createClass({
-  mixins: [RouterMixin],
+  mixins: [RouterMixin, Fluxbone.EventMixin('user', 'add:organizations'), Fluxbone.LoadingMixin('user')],
   routes: {
     '/parsley': 'dashboard',
     '/parsley/ingredients': 'ingredients',
@@ -37,13 +33,7 @@ var AppComponent = React.createClass({
   },
   componentWillMount: function() {
     var self = this;
-    this.props.model.fetch({key: 'me'})
-    .done(function() {
-      self.setState({loading: false, error: null});
-    })
-    .fail(function() {
-      self.setState({loading: false, error: "An error occured. :-("});
-    });
+    this.props.user.fetch();
   },
   getInitialState: function() {
     return {
@@ -63,15 +53,18 @@ var AppComponent = React.createClass({
 
     return (
       <div>
-        <SidebarComponent organizations={this.props.model.get('organizations')} />
+        <SidebarComponent organizations={this.props.user.get('organizations')} />
         <div className="app-container">
           {rez}
         </div>
       </div>
     );
   },
+  error: function() {
+    return <ErrorComponent message={this.state.error} />
+  },
   dashboard: function() {
-    return <DashboardComponent model={this.props.model} />
+    return <DashboardComponent model={this.props.user} />
   },
   ingredients: function() {
     return <div>Ingredients</div>;
@@ -80,20 +73,24 @@ var AppComponent = React.createClass({
     return <div>Suppliers</div>;
   },
   organizations: function(id) {
-    var org;
     if (id == 'new') {
-      org = new OrganizationModel({id: 'new'});
+      return (
+        <OrganizationEditorComponent org={new OrganizationModel()} user={this.props.user} />
+      );
     } else {
-      org = this.props.model.get('organizations').get(id);
+      var org = this.props.user.get('organizations').get(id);
+      if (_.isUndefined(org)) {
+        return <ErrorComponent message="An error occured" />;
+      }
+      return <OrganizationComponent org={org} />;
     }
-    return <OrganizationComponent model={org} />;
   }
 });
 
 $(function() {
   var user = new UserModel({id: 'me'});
   React.render(
-    <AppComponent history={true} model={user} />,
+    <AppComponent history={true} user={user} />,
     document.getElementById('interface')
   );
 });

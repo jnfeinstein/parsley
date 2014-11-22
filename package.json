@@ -4,7 +4,9 @@
   "version": "0.0.1",
   "dependencies": {
     "backbone": "^1.1.2",
+    "backbone-associations": "^0.6.2",
     "bootstrap-sass": "^3.3.1",
+    "flux": "^2.0.1",
     "jquery": "^2.1.1",
     "react": "^0.12.1",
     "react-mini-router": "^1.0.0",

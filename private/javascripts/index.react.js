@@ -1,5 +1,7 @@
 require('./pack');
 
+window.basepath = '/index';
+
 var NavItemComponent = require('./components/navitem.react');
 
 function popupWindow(url, title, w, h) {

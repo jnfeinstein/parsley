@@ -25,7 +25,7 @@ func (u *UserController) Initialize(m *martini.ClassicMartini) {
 	))
 
 	m.Get("/users/me", handlers.UserRequired, func(conn db.Connection, s sessions.Session, r render.Render, u *User) {
-		conn.First(u).Association("Organizations").Find(u.Organizations)
+		conn.Model(u).Association("Organizations").Find(&u.Organizations)
 		r.JSON(200, u)
 	})
 

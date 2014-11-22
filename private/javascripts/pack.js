@@ -2,11 +2,13 @@ window.jQuery = window.$ = require('jquery');
 window._ = require('underscore');
 window.React = require('react/addons');
 window.Backbone = require('backbone');
+require('backbone-associations');
+Backbone.$ = $;
 window.navigate = require('react-mini-router').navigate;
 window.RouterMixin = require('react-mini-router').RouterMixin;
 require('bootstrap-sass/assets/javascripts/bootstrap');
 
-Backbone.$ = $;
+window.basepath = '/';
 
 window.isMobile = {
     Android: function() {

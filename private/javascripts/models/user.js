@@ -1,9 +1,18 @@
+var Backbone = require("backbone");
+require('backbone-associations');
+var Fluxbone = require('../lib').Fluxbone;
 var OrganizationModel = require('./organization');
 
-var UserModel = Backbone.Model.extend({
-  initialize: function() {
-    this.set('organizations', new Backbone.Collection());
-    this.on('sync', this.synced.bind(this));
+var UserModel = Backbone.AssociatedModel.extend({
+  relations: [
+      {
+        type: Backbone.Many,
+        key: 'organizations',
+        relatedModel: OrganizationModel
+      }
+  ],
+  defaults: {
+    organizations: []
   },
   urlRoot: '/users',
   link: function(base) {
@@ -11,11 +20,9 @@ var UserModel = Backbone.Model.extend({
   },
   name: function() {
     return this.get('firstname') + ' ' + this.get('lastname');
-  },
-  synced: function() {
-    var orgs = new Backbone.Collection(this.get('organizations'), OrganizationModel);
-    this.set('organizations', orgs);
   }
 });
+
+Fluxbone.ModelInit(UserModel);
 
 module.exports = UserModel;
