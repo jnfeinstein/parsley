@@ -13,8 +13,8 @@ CREATE TABLE users_organizations
   organization_id BIGINT REFERENCES organizations (id) ON DELETE CASCADE,
   CONSTRAINT users_organizations_unique UNIQUE (user_id, organization_id)
 );
-CREATE INDEX idx_user_id ON users_organizations (user_id);
-CREATE INDEX idx_organization_id ON users_organizations (organization_id);
+CREATE INDEX idx_user_organizations_user_id ON users_organizations (user_id);
+CREATE INDEX idx_user_organizations_organization_id ON users_organizations (organization_id);
 
 -- +goose Down
 DROP TABLE IF EXISTS users_organizations;

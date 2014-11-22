@@ -1,13 +1,11 @@
 package controllers
 
 import (
-	"encoding/json"
+	"github.com/codegangsta/martini-contrib/binding"
 	"github.com/go-martini/martini"
 	"github.com/martini-contrib/render"
-	"github.com/martini-contrib/sessions"
-	"net/http"
-	"parsley/app/handlers"
-	"parsley/app/models"
+	. "parsley/app/handlers"
+	. "parsley/app/models"
 	"parsley/db"
 	"parsley/internals"
 )
@@ -16,35 +14,15 @@ type SuppliersController struct{}
 
 func (sc SuppliersController) Initialize(m *martini.ClassicMartini) {
 
-	m.Get("/suppliers/list", handlers.UserRequired, func(r render.Render, conn db.Connection, s sessions.Session) {
-		user_id, ok := s.Get("user_id").(int64)
-		if !ok {
-			r.Error(500)
-			return
-		}
-		suppliers := []models.Supplier{}
-		conn.Where("user_id = ?", user_id).Find(&suppliers)
+	m.Get("/suppliers/:supplier_id", UserRequired, SetupOrganization, func(r render.Render, conn db.Connection, p martini.Params, o *Organization) {
+		var suppliers []Supplier
+		conn.Model(o).Related(&suppliers)
 		r.JSON(200, suppliers)
 	})
 
-	m.Post("/suppliers", func(r render.Render, req *http.Request, conn db.Connection, s sessions.Session) {
-		user_id, ok := s.Get("user_id").(int64)
-		if !ok {
-			r.Error(500)
-			return
-		}
-		supplier := models.Supplier{}
-
-		if json.NewDecoder(req.Body).Decode(&supplier) != nil {
-			r.Error(401)
-			return
-		} else if supplier.Name == "" {
-			r.Error(400)
-			return
-		}
-        supplier.UserId = user_id
-		conn.Save(supplier) // updates if ID provided
-		r.JSON(200, supplier)
+	m.Post("/suppliers", UserRequired, SetupOrganization, binding.Bind(Supplier{}), func(r render.Render, conn db.Connection, o *Organization, s Supplier) {
+		conn.Model(o).Association("Suppliers").Append(s)
+		r.JSON(200, s)
 	})
 }
 

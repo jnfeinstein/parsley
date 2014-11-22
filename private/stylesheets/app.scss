@@ -1,5 +1,12 @@
+@import "bootstrap";
+
 nav > div.container-fluid {
   background-color: lightyellow;
+}
+
+ul.nav li.dropdown {
+	cursor: hand;
+	cursor: pointer;
 }
 
 ul.nav.navbar-right a {

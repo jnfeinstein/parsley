@@ -1,10 +1,11 @@
 package models
 
-import ()
-
 type Supplier struct {
-	Id     int64  `json:"id"`
-	User   User   `json:"-"`
-	UserId int64  `json:"-"`
-	Name   string `json:"name"`
+	Id              int64     `json:"id"`
+	OrganizationId  int64     `json:"organization_id"`
+	Name            string    `json:"name"`
+	PhoneNumber     string    `json:"phone_number"`
+	PhysicalAddress string    `json:"physical_address"`
+	EmailAddress    string    `json:"email_address"`
+	Products        []Product `json:"products"`
 }

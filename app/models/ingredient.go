@@ -1,15 +1,7 @@
 package models
 
-import (
-	"database/sql"
-)
-
 type Ingredient struct {
-	Id           int64 `json:"id"`
-	User         User  `json:"-"`
-	UserId       int64 `json:"user_id"`
-	SuppliedBy   IngredientSupplier
-	SuppliedById sql.NullInt64
-	// TODO: Add actual unit measurements
-	Unit string `json:"unit_name"`
+	Id             int64  `json:"id"`
+	OrganizationId int64  `json:"organization_id"`
+	Name           string `json:"name"`
 }

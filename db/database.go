@@ -54,3 +54,5 @@ func NewConnection() (*Connection, error) {
 	}
 	return &Connection{&db}, nil
 }
+
+var NotFound error = gorm.RecordNotFound

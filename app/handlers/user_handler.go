@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"github.com/asazernik/oauth2"
 	"github.com/go-martini/martini"
+	"github.com/martini-contrib/render"
 	"github.com/martini-contrib/sessions"
 	"io/ioutil"
 	"log"
@@ -48,9 +49,10 @@ func fetchGoogleProfile(accessToken string) *googleProfile {
 	return &profile
 }
 
-func UserRequired(conn db.Connection, w http.ResponseWriter, r *http.Request, tokens oauth2.Tokens, s sessions.Session, c martini.Context) {
+func UserRequired(conn db.Connection, r render.Render, tokens oauth2.Tokens, s sessions.Session, c martini.Context) {
 	if tokens.Expired() {
-		http.Error(w, "Unauthorized", http.StatusForbidden)
+		r.Error(http.StatusForbidden)
+		return
 	}
 	var user User
 	userId := s.Get("user_id")
@@ -58,32 +60,30 @@ func UserRequired(conn db.Connection, w http.ResponseWriter, r *http.Request, to
 	// Check if user exists
 	if userId != nil && conn.First(&user, userId).Error == nil {
 		// Valid user
+		c.Map(&user)
 		return
 	}
 	// Try to pull profile from Google
 	profile := fetchGoogleProfile(tokens.Access())
 	if profile == nil {
-		http.Error(w, "Error communicating with Google", http.StatusInternalServerError)
+		r.Error(http.StatusInternalServerError)
 		return
 	}
 	// Fetch emails from db that match the Google user
 	var emails []Email
-	if err := conn.Where("address in (?)", profile.EmailAddresses()).Find(&emails).Error; err != nil {
-		http.Error(w, "Error looking up user", http.StatusInternalServerError)
-		log.Panic(err.Error())
+	if err := conn.Where("address in (?)", profile.EmailAddresses()).Find(&emails).Error; err == db.NotFound {
+		// This is a new user
+		var newUser *User
+		if newUser, err = NewUser(conn, profile.EmailAddresses(), profile.Name.First, profile.Name.Last); err != nil {
+			r.Error(http.StatusInternalServerError)
+			return
+		}
+		s.Set("user_id", newUser.Id)
+		c.Map(&newUser)
 		return
 	}
-	if len(emails) > 0 {
-		// User already has an account
-		s.Set("user_id", emails[0].UserId)
-		return
-	}
-	// This is a new user
-	newUser, err := NewUser(conn, profile.EmailAddresses(), profile.Name.First, profile.Name.Last)
-	if err != nil {
-		http.Error(w, "Error creating new user", http.StatusInternalServerError)
-		log.Panic(err.Error())
-		return
-	}
-	s.Set("user_id", newUser.Id)
+	// User already has an account
+	conn.First(&user, emails[0].UserId)
+	s.Set("user_id", user.Id)
+	c.Map(&user)
 }

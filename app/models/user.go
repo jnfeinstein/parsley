@@ -6,11 +6,11 @@ import (
 )
 
 type User struct {
-	Id            int64
+	Id            int64          `json:"id"`
 	Emails        []Email        `json:"emails"`
-	Organizations []Organization `gorm:"many2many:users_organizations;"`
-	FirstName     string         `sql:"size:255"`
-	LastName      string         `sql:"size:255"`
+	Organizations []Organization `json:"organizations" gorm:"many2many:users_organizations;"`
+	FirstName     string         `json:"firstname"`
+	LastName      string         `json:"lastname"`
 	CreatedAt     time.Time      `json:"createdAt"`
 	UpdatedAt     time.Time      `json:"updatedAt"`
 }

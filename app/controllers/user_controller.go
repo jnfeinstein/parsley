@@ -24,10 +24,9 @@ func (u *UserController) Initialize(m *martini.ClassicMartini) {
 		goauth2.Scope("profile", "email"),
 	))
 
-	m.Get("/user/me", handlers.UserRequired, func(conn db.Connection, s sessions.Session, r render.Render) {
-		var user User
-		conn.First(&user, s.Get("user_id")).Association("Organizations").Find(&user.Organizations)
-		r.JSON(200, user)
+	m.Get("/users/me", handlers.UserRequired, func(conn db.Connection, s sessions.Session, r render.Render, u *User) {
+		conn.First(u).Association("Organizations").Find(u.Organizations)
+		r.JSON(200, u)
 	})
 
 	m.Get("/loggedin", oauth2.LoginRequired, func(w http.ResponseWriter) {

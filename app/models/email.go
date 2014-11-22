@@ -5,8 +5,8 @@ import (
 )
 
 type Email struct {
-	Id        int64
-	UserId    int64
-	Address   string    `json:"address" sql:"type:varchar(100);not null;unique"`
-	CreatedAt time.Time `json:"createdAt"`
+	Id        int64     `json:"id"`
+	UserId    int64     `json:"user_id"`
+	Address   string    `json:"address"`
+	CreatedAt time.Time `json:"created_at"`
 }

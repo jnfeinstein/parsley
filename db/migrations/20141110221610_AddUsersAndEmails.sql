@@ -15,6 +15,7 @@ CREATE TABLE emails
   address VARCHAR(255) NOT NULL UNIQUE,
   created_at TIMESTAMP
 );
+CREATE INDEX idx_emails_user_id ON emails (user_id);
 
 -- +goose Down
 DROP TABLE IF EXISTS emails;
