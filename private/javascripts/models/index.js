@@ -1,2 +1,4 @@
-module.exports.User = require('./user');
-module.exports.Organization = require('./organization');
+module.exports = {
+	User: require('./user'),
+	Organization: require('./organization')
+};

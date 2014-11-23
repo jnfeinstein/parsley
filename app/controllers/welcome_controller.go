@@ -8,12 +8,12 @@ import (
 	"parsley/internals"
 )
 
-type IndexController struct{}
+type WelcomeController struct{}
 
-func (i *IndexController) Initialize(m *martini.ClassicMartini) {
-	m.Get("/($|index.*)", func(w http.ResponseWriter, req *http.Request, r render.Render, tokens oauth2.Tokens) {
+func (w *WelcomeController) Initialize(m *martini.ClassicMartini) {
+	m.Get("/($|welcome.*)", func(w http.ResponseWriter, req *http.Request, r render.Render, tokens oauth2.Tokens) {
 		if tokens.Expired() {
-			r.HTML(200, "index", nil)
+			r.HTML(200, "welcome", nil)
 		} else {
 			http.Redirect(w, req, "/parsley", http.StatusTemporaryRedirect)
 		}
@@ -21,5 +21,5 @@ func (i *IndexController) Initialize(m *martini.ClassicMartini) {
 }
 
 func init() {
-	internals.RegisterController(&IndexController{})
+	internals.RegisterController(&WelcomeController{})
 }

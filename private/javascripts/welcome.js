@@ -1,8 +1,8 @@
-require('./pack');
+require('./Pack');
 
-window.basepath = '/index';
+window.basepath = '/welcome';
 
-var NavItemComponent = require('./components/navitem.react');
+var NavItemComponent = require('./components').NavItem;
 
 function popupWindow(url, title, w, h) {
   var left = (screen.width/2)-(w/2);
@@ -52,37 +52,37 @@ var AppComponent = React.createClass({
   mixins: [RouterMixin],
   routes: {
     '/': 'welcome',
-    '/index': 'welcome',
-    '/index/about': 'about',
-    '/index/contact': 'contact'
+    '/welcome': 'welcome',
+    '/welcome/about': 'about',
+    '/welcome/contact': 'contact'
   },
   render: function() {
     return (
       <div>
-      <nav className="navbar navbar-default" role="navigation">
-        <div className="container-fluid">
-          <div className="navbar-header">
-            <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target={"#" + this.props.id}>
-              <span className="sr-only">Toggle navigation</span>
-              <span className="icon-bar"></span>
-              <span className="icon-bar"></span>
-              <span className="icon-bar"></span>
-            </button>
-            <a className="navbar-brand" href={this.props.brandUrl}>Parsley</a>
-          </div>
+        <nav className="navbar navbar-default" role="navigation">
+          <div className="container-fluid">
+            <div className="navbar-header">
+              <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#welcome-navbar">
+                <span className="sr-only">Toggle navigation</span>
+                <span className="icon-bar"></span>
+                <span className="icon-bar"></span>
+                <span className="icon-bar"></span>
+              </button>
+              <a className="navbar-brand" href={basepath}>Parsley</a>
+            </div>
 
-          <div className="collapse navbar-collapse" id={this.props.id}>
-            <ul className="nav navbar-nav">
-              <NavItemComponent href={'/index/about'} title="About" />
-              <NavItemComponent href={'/index/contact'} title="Contact" />
-            </ul>
-            <ul className="nav navbar-nav navbar-right">
-              <NavItemComponent href={'#'} title="Sign up" onClick={login} />
-              <NavItemComponent href={'#'} title="Log in" onClick={login} />
-            </ul>
+            <div className="collapse navbar-collapse" id="welcome-navbar">
+              <ul className="nav navbar-nav">
+                <NavItemComponent href={basepath + '/about'} title="About" />
+                <NavItemComponent href={basepath + '/contact'} title="Contact" />
+              </ul>
+              <ul className="nav navbar-nav navbar-right">
+                <NavItemComponent href={'#'} title="Sign up" onClick={login} />
+                <NavItemComponent href={'#'} title="Log in" onClick={login} />
+              </ul>
+            </div>
           </div>
-        </div>
-      </nav>
+        </nav>
         {this.renderCurrentRoute()}
       </div>
     );

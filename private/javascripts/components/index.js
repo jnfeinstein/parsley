@@ -1,4 +1,7 @@
-module.exports.Dashboard = require('./dashboard.react');
-module.exports.Organization = require('./organizations.react');
-module.exports.Sidebar = require('./sidebar.react');
-module.exports.Error = require('./error.react');
+module.exports = {
+	Dashboard: require('./Dashboard'),
+	NavItem: require('./NavItem'),
+	Organization: require('./Organizations'),
+	Sidebar: require('./Sidebar'),
+	Error: require('./Error')
+};
