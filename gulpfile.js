@@ -24,7 +24,7 @@ gulp.task('stylesheets', function() {
 });
 
 gulp.task('javascripts', function() {
-    return gulp.src('private/javascripts/**/*.js', {read: false})
+    return gulp.src('private/javascripts/*.js', {read: false})
         .pipe(browserify({
             transform: ['reactify'],
             insertGlobals: true,

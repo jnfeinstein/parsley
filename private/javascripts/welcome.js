@@ -1,4 +1,4 @@
-require('./Pack');
+require('./lib');
 
 window.basepath = '/welcome';
 

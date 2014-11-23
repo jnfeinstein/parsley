@@ -1,4 +1,4 @@
-require('./Pack');
+require('./lib');
 
 var WebAPI = require('./util').WebAPI;
 
