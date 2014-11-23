@@ -1,6 +1,6 @@
 development:
     driver: postgres
-    open: dbname=postgres sslmode=disable
+    open: host=$DATABASE_URL dbname=postgres sslmode=disable
 
 production:
     driver: postgres
