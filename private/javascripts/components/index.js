@@ -4,5 +4,6 @@ module.exports = {
 	Organization: require('./Organizations'),
 	PrimaryNavbar: require('./PrimaryNavbar'),
   SecondaryNavbar: require('./SecondaryNavbar'),
-	Error: require('./Error')
+	Error: require('./Error'),
+  Loading: require('./Loading')
 };

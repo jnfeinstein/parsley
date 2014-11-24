@@ -35,10 +35,6 @@ module.exports = {
         type: ActionTypes.CREATED_ORGANIZATION,
         organization: newOrganization
       });
-      Dispatcher.handleServerAction({
-        type: ActionTypes.CHANGED_CURRENT_ORGANIZATION,
-        organization: newOrganization
-      });
       window.location = basepath + newOrganization.Link();
     });
   },

@@ -2,8 +2,7 @@ var _ = require('underscore');
 var React = require('react');
 var Helpers = require('../lib').Helpers;
 var WebAPI = require('../util').WebAPI;
-
-var Constants = require('../constants');
+var Dispatcher = require('../dispatcher');
 
 var Organization = require('../models').Organization;
 var OrganizationStore = require('../stores').Organizations;
@@ -57,25 +56,32 @@ var OrganizationEditorComponent = React.createClass({
 var OrganizationComponent = React.createClass({
   getInitialState: function() {
     return {
-      organization: this.getOrganization(this.props.id)
+      currentOrganization: this.getOrganization(this.props.id),
+      organizations: OrganizationStore.getAll()
     };
+  },
+  componentDidMount: function() {
+    OrganizationStore.addChangeListener(this.updateStateFromStores);
+  },
+  componentWillUnmount: function() {
+    OrganizationStore.removeChangeListener(this.updateStateFromStores);
   },
   componentWillReceiveProps: function(nextProps) {
     this.setState({
-      organization: this.getOrganization(nextProps.id)
+      currentOrganization: this.getOrganization(nextProps.id)
     });
   },
   render: function() {
-    if (_.isEmpty(this.state.organization)) {
+    if (_.isEmpty(this.state.currentOrganization)) {
       return <ErrorComponent message="Organization does not exist!" />;
-    } else if (this.state.organization.isNew()) {
-      return <OrganizationEditorComponent organization={this.state.organization} />;
+    } else if (this.state.currentOrganization.isNew()) {
+      return <OrganizationEditorComponent organization={this.state.currentOrganization} />;
     }
 
     return (
       <div>
-        <SecondaryNavbarComponent organization={this.state.organization} />
-        {this.state.organization.Name()}
+        <SecondaryNavbarComponent currentOrganization={this.state.currentOrganization} organizations={this.state.organizations} />
+        {this.state.currentOrganization.Name()}
       </div>
     );
   },
@@ -85,6 +91,12 @@ var OrganizationComponent = React.createClass({
     } else {
       return OrganizationStore.get(id);
     }
+  },
+  updateStateFromStores: function() {
+    this.setState({
+      currentOrganization: OrganizationStore.get(this.props.id), // May have changed due to loading new orgs
+      organizations: OrganizationStore.getAll()
+    });
   }
 });
 

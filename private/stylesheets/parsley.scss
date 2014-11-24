@@ -4,14 +4,6 @@ div.primary-navbar-container nav {
   > div.container-fluid {
     background-color: lightyellow;
   }
-
-  .create-new a {
-    font-weight: bold;
-  }
-
-  .current a {
-    font-weight: bold;
-  }
 }
 
 div.app-container {
@@ -38,6 +30,14 @@ div.organization-editor-container {
 
     .navbar .navbar-collapse {
       text-align: center;
+    }
+
+    .create-new a {
+      font-weight: bold;
+    }
+
+    .current a {
+      font-weight: bold;
     }
   }
 }
