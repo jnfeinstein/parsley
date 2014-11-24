@@ -15,7 +15,7 @@ import (
 
 type UserController struct{}
 
-func (u *UserController) Initialize(m *martini.ClassicMartini) {
+func (u *UserController) Initialize(m martini.Router) {
 
 	m.Get("/users/me", handlers.UserRequired, func(conn db.Connection, s sessions.Session, r render.Render, u *User) {
 		conn.Model(u).Association("Organizations").Find(&u.Organizations)

@@ -5,11 +5,22 @@ import (
 )
 
 type Controller interface {
-	Initialize(m *martini.ClassicMartini)
+	Initialize(mr martini.Router)
 }
 
-var AllControllers []Controller = []Controller{}
+type RouteLevel []Controller
+var AllControllers RouteLevel
+
+func (rs *RouteLevel) Initialize(mr martini.Router) {
+	for _, c := range *rs {
+		c.Initialize(mr)
+	}
+}
+
+func (rs *RouteLevel) Register(c Controller) {
+	*rs = append(*rs, c)
+}
 
 func RegisterController(c Controller) {
-	AllControllers = append(AllControllers, c)
+    AllControllers.Register(c)
 }

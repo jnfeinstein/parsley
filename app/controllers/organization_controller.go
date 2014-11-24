@@ -10,9 +10,13 @@ import (
 	"parsley/internals"
 )
 
-type OrganizationController struct{}
+type OrganizationController struct {
+	subControllers internals.RouteLevel
+}
 
-func (o *OrganizationController) Initialize(m *martini.ClassicMartini) {
+var orgController OrganizationController
+
+func (o *OrganizationController) Initialize(m martini.Router) {
 	m.Post("/organizations", UserRequired, binding.Bind(Organization{}), func(r render.Render, conn db.Connection, u *User, o Organization) {
 		conn.Save(&o)
 		conn.Model(&o).Association("Users").Append(u)
@@ -24,8 +28,13 @@ func (o *OrganizationController) Initialize(m *martini.ClassicMartini) {
 		conn.Model(o).Related(&suppliers)
 		r.JSON(200, suppliers)
 	})
+
+	m.Group("/organizations/:organization_id", func(m martini.Router) {
+		o.subControllers.Initialize(m)
+	}, UserRequired, SetupOrganization)
+
 }
 
 func init() {
-	internals.RegisterController(&OrganizationController{})
+	internals.RegisterController(&orgController)
 }

@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"github.com/go-martini/martini"
+	goauth2 "github.com/golang/oauth2"
+	"github.com/martini-contrib/oauth2"
 	"github.com/martini-contrib/render"
 	"github.com/martini-contrib/sessions"
 	"html/template"
@@ -53,9 +55,7 @@ func serverRun(cmd *Command, args ...string) {
 		goauth2.Scope("profile", "email"),
 	))
 
-	for _, c := range internals.AllControllers {
-		c.Initialize(m)
-	}
+	internals.AllControllers.Initialize(m)
 
 	m.Run()
 }

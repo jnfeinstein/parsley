@@ -10,7 +10,7 @@ import (
 
 type WelcomeController struct{}
 
-func (w *WelcomeController) Initialize(m *martini.ClassicMartini) {
+func (w *WelcomeController) Initialize(m martini.Router) {
 	m.Get("/($|welcome.*)", func(w http.ResponseWriter, req *http.Request, r render.Render, tokens oauth2.Tokens) {
 		if tokens.Expired() {
 			r.HTML(200, "welcome", nil)
