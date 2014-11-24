@@ -103,8 +103,8 @@ var AppComponent = React.createClass({
               <NavItem eventKey={2} href={basepath + '/contact'}>Contact</NavItem>
             </Nav>
             <Nav right>
-              <NavItem eventKey={3} href='#' onClick={login}>Sign up</NavItem>
-              <NavItem eventKey={4} href='#' onClick={login}>Log in</NavItem>
+              <NavItem eventKey={3} href='#' onSelect={login}>Sign up</NavItem>
+              <NavItem eventKey={4} href='#' onSelect={login}>Log in</NavItem>
             </Nav>
           </Navbar>
         </div>
