@@ -21,6 +21,10 @@ func (sc SuppliersController) Initialize(m *martini.ClassicMartini) {
 	})
 
 	m.Post("/suppliers", UserRequired, SetupOrganization, binding.Bind(Supplier{}), func(r render.Render, conn db.Connection, o *Organization, s Supplier) {
+		if s.Id != 0 || s.OrganizationId != 0 {
+			r.Error(500)
+			return
+		}
 		conn.Model(o).Association("Suppliers").Append(s)
 		r.JSON(200, s)
 	})
