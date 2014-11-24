@@ -2,8 +2,8 @@ var NavItem = require('./NavItem');
 
 var SidebarComponent = React.createClass({
   render: function() {
-    var orgs = this.props.organizations.map(function(org, i) {
-      return <NavItem key={i} href={org.link(basepath)} title={org.name()} />;
+    var orgLinks = this.props.organizations.map(function(org, i) {
+      return <NavItem key={i} href={basepath + org.link(basepath)} title={org.name()} onClick={this.orgLinkClicked} />;
     });
 
     return (
@@ -25,7 +25,7 @@ var SidebarComponent = React.createClass({
                 <li className="dropdown">
                   <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Organizations<span className="caret"></span></a>
                   <ul className="dropdown-menu" role="menu">
-                    {orgs}
+                    {orgLinks}
                     <li className="divider"></li>
                     <NavItem className="create-new" key="new" href={basepath + "/organizations/new"} title="Create new" />
                   </ul>
@@ -39,6 +39,9 @@ var SidebarComponent = React.createClass({
         </nav>
       </div>
     );
+  },
+  orgLinkClicked: function(e) {
+
   }
 });
 

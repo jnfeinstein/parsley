@@ -1,18 +1,18 @@
-require('./lib');
+require('./lib/Pack');
+window.basepath = '/parsley';
 
 var WebAPI = require('./util').WebAPI;
 
-var UserModel = require('./models').User;
-var OrganizationModel = require('./models').Organization;
+var Components = require('./components');
+var DashboardComponent = Components.Dashboard;
+var OrganizationComponent = Components.Organization;
+var SidebarComponent = Components.Sidebar;
+var ErrorComponent = Components.Error;
 
-var DashboardComponent = require('./components').Dashboard;
-var OrganizationComponent = require('./components').Organization.Component;
-var OrganizationEditorComponent = require('./components').Organization.EditorComponent;
-var SidebarComponent = require('./components').Sidebar;
-var ErrorComponent = require('./components').Error;
-
-var CurrentUserStore = require('./stores').CurrentUser;
-window.basepath = '/parsley';
+var Stores = require('./stores');
+var CurrentUserStore = Stores.CurrentUser;
+var OrganizationStore = Stores.Organizations;
+var CurrentOrganizationStore = Stores.CurrentOrganization;
 
 var LoadingComponet = React.createClass({
   render: function() {
@@ -33,13 +33,17 @@ var AppComponent = React.createClass({
     '/parsley/organizations/:id': 'organizations'
   },
   componentDidMount: function() {
-    CurrentUserStore.addChangeListener(this.receiveCurrentUser);
+    CurrentUserStore.addChangeListener(this.updateStateFromStores);
+    CurrentOrganizationStore.addChangeListener(this.updateStateFromStores);
+    OrganizationStore.addChangeListener(this.updateStateFromStores);
   },
   getInitialState: function() {
     return {
       error: null,
-      currentUser: CurrentUserStore.get()
-    }
+      currentUser: CurrentUserStore.get(),
+      organizations: OrganizationStore.getAll(),
+      currentOrganization: CurrentOrganizationStore.get()
+    };
   },
   render: function() {
     var rez;
@@ -53,7 +57,7 @@ var AppComponent = React.createClass({
 
     return (
       <div>
-        <SidebarComponent organizations={[]} />
+        <SidebarComponent organizations={this.state.organizations} />
         <div className="app-container">
           {rez}
         </div>
@@ -73,20 +77,14 @@ var AppComponent = React.createClass({
     return <div>Suppliers</div>;
   },
   organizations: function(id) {
-    if (id == 'new') {
-      return (
-        <OrganizationEditorComponent org={new OrganizationModel()} />
-      );
-    } else {
-      var org = this.state.currentUser.organizations[id];
-      if (_.isEmpty(org)) {
-        return <ErrorComponent message="An error occured" />;
-      }
-      return <OrganizationComponent org={org} />;
-    }
+    return <OrganizationComponent id={id} />;
   },
-  receiveCurrentUser: function() {
-    this.setState({currentUser: CurrentUserStore.get()});
+  updateStateFromStores: function() {
+    this.setState({
+      currentUser: CurrentUserStore.get(),
+      currentOrganization: CurrentOrganizationStore.get(),
+      organizations: OrganizationStore.getAll()
+    });
   }
 });
 

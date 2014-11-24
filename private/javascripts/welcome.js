@@ -1,7 +1,7 @@
-require('./lib');
-
+require('./lib/Pack');
 window.basepath = '/welcome';
 
+var Helpers = require('./lib').Helpers;
 var NavItemComponent = require('./components').NavItem;
 
 function popupWindow(url, title, w, h) {
@@ -11,7 +11,7 @@ function popupWindow(url, title, w, h) {
 }
 
 function login() {
-  if (isMobile.any()) {
+  if (Helpers.IsMobile.any()) {
     window.location.href = "/parsley";
     return;
   }

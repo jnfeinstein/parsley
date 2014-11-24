@@ -1,3 +1,5 @@
 module.exports = {
-	CurrentUser: require('./CurrentUser')
+	CurrentUser: require('./CurrentUser'),
+  CurrentOrganization: require('./CurrentOrganization'),
+	Organizations: require('./Organizations')
 };

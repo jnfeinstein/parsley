@@ -11,8 +11,8 @@ type User struct {
 	Organizations []Organization `json:"organizations" gorm:"many2many:users_organizations;"`
 	FirstName     string         `json:"firstname"`
 	LastName      string         `json:"lastname"`
-	CreatedAt     time.Time      `json:"createdAt"`
-	UpdatedAt     time.Time      `json:"updatedAt"`
+	CreatedAt     time.Time      `json:"created_at"`
+	UpdatedAt     time.Time      `json:"updated_at"`
 }
 
 func NewUser(conn db.Connection, emailAddresses []string, first string, last string) (*User, error) {

@@ -11,7 +11,7 @@ var gulp = require('gulp'),
 
 var production = argv.production != undefined;
 
-gulp.task('stylesheets', function() {
+gulp.task('css', function() {
   return gulp.src('private/stylesheets/*.scss')
     .pipe(sass({
       style: 'compressed',
@@ -23,7 +23,7 @@ gulp.task('stylesheets', function() {
     .pipe(gulp.dest('public/stylesheets'));
 });
 
-gulp.task('javascripts', function() {
+gulp.task('scripts', function() {
     return gulp.src('private/javascripts/*.js', {read: false})
         .pipe(browserify({
             transform: ['reactify'],
@@ -35,8 +35,8 @@ gulp.task('javascripts', function() {
 });
 
 gulp.task('watch', function() {
-  gulp.watch("private/stylesheets/**", ['stylesheets']);
-  gulp.watch("private/javascripts/**", ['javascripts']);
+  gulp.watch("private/stylesheets/**", ['css']);
+  gulp.watch("private/javascripts/**", ['scripts']);
 });
 
 
@@ -45,7 +45,7 @@ gulp.task('clean', function(cb) {
 });
 
 gulp.task('default', ['clean'], function() {
-    return gulp.start('stylesheets', 'javascripts');
+    return gulp.start('css', 'scripts');
 });
 
 gulp.task('heroku', function() {
