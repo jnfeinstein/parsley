@@ -11,6 +11,15 @@ var SecondaryNavbar = React.createClass({
   render: function() {
     var self = this;
 
+    var toggleButton = (
+      <button>
+        <span className="sr-only">Toggle navigation</span>
+        <span className="icon-bar"></span>
+        <span className="icon-bar"></span>
+        <span className="icon-bar"></span>
+      </button>
+    );
+
     var orgLinks = this.props.organizations.map(function(org, i) {
       var id = org.get('id');
       var isCurrent = org == self.props.currentOrganization;
@@ -18,8 +27,8 @@ var SecondaryNavbar = React.createClass({
     });
     return (
       <div className="secondary-navbar-container">
-        <Navbar fluid>
-          <Nav>
+        <Navbar fluid toggleButton={toggleButton} toggleNavKey={1}>
+          <Nav eventKey={1}>
             <DropdownButton eventKey={1} title={this.props.currentOrganization.Name()}>
               {orgLinks}
               <NavItem className='create-new' eventKey='new' href={basepath + Organization.url + '/new'}>Create new</NavItem>
