@@ -1,6 +1,9 @@
 require('./lib/Pack');
 window.basepath = '/parsley';
 
+var Helpers = require('./lib').Helpers;
+require('react-bootstrap').NavItem.defaultProps.onSelect = Helpers.BSNavigate;
+
 var WebAPI = require('./util').WebAPI;
 var Constants = require('./constants');
 

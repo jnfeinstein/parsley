@@ -1,4 +1,5 @@
 var _ = require('underscore');
+var ReactRouter = require('react-router-component');
 
 var isMobile = {
     Android: function() {
@@ -21,6 +22,10 @@ var isMobile = {
     }
 }
 
+function navigate(path) {
+  ReactRouter.environment.defaultEnvironment.navigate(path);
+}
+
 module.exports = {
   IsMobile: isMobile,
   Make: function(model, data) {
@@ -38,5 +43,9 @@ module.exports = {
       values[attr] = ref.state.value;      
     });
     return values;
+  },
+  Navigate: navigate,
+  BSNavigate: function(eventKey, path) {
+    navigate(path);
   }
 };

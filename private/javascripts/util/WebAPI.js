@@ -35,7 +35,7 @@ module.exports = {
         type: ActionTypes.CREATED_ORGANIZATION,
         organization: newOrganization
       });
-      window.location = basepath + newOrganization.Link();
+      Helpers.Navigate(basepath + newOrganization.Link());
     });
   },
   GetOrganizationDetails: function(org) {

@@ -3,9 +3,11 @@ var Nav = ReactBootstrap.Nav;
 var Navbar = ReactBootstrap.Navbar;
 var NavItem = ReactBootstrap.NavItem;
 
+var Link = require('react-router-component').Link;
+
 var PrimaryNavbarComponent = React.createClass({
   render: function() {
-    var brand = <a className="navbar-brand" href={basepath}>Parsley</a>;
+    var brand = <Link className="navbar-brand" href={basepath}>Parsley</Link>;
     var toggleButton = (
       <button>
         <span className="sr-only">Toggle navigation</span>

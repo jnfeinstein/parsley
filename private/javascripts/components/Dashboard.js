@@ -24,7 +24,7 @@ var OrganizationAccordion = React.createClass({
     var orgPanels = _.map(this.props.organizations, function(org) {
       return (
         <Panel key={org.get('id')} eventKey={org.get('id')} header={org.Name()}>
-          <a href={basepath + org.Link()}>Manage {org.Name()}</a>
+          <Link href={basepath + org.Link()}>Manage {org.Name()}</Link>
         </Panel>
       );
     });

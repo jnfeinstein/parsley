@@ -3,7 +3,7 @@ var React = require('react');
 var Helpers = require('../lib').Helpers;
 var WebAPI = require('../util').WebAPI;
 var Dispatcher = require('../dispatcher');
-
+var Constants = require('../constants');
 var Organization = require('../models').Organization;
 var OrganizationStore = require('../stores').Organizations;
 
@@ -93,10 +93,16 @@ var OrganizationComponent = React.createClass({
     }
   },
   updateStateFromStores: function() {
-    this.setState({
-      currentOrganization: OrganizationStore.get(this.props.id), // May have changed due to loading new orgs
-      organizations: OrganizationStore.getAll()
-    });
+    if (this.props.id == Constants.NewIdPlaceholder) {
+      this.setState({
+        organizations: OrganizationStore.getAll()
+      });
+    } else {
+      this.setState({
+        currentOrganization: OrganizationStore.get(this.props.id), // May have changed due to loading new orgs
+        organizations: OrganizationStore.getAll()
+      });
+    }
   }
 });
 
