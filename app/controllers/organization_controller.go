@@ -23,12 +23,6 @@ func (o *OrganizationController) Initialize(m martini.Router) {
 		r.JSON(200, o)
 	})
 
-	m.Get("/organizations/:organization_id/suppliers", UserRequired, SetupOrganization, func(r render.Render, conn db.Connection, o *Organization) {
-		var suppliers []Supplier
-		conn.Model(o).Related(&suppliers)
-		r.JSON(200, suppliers)
-	})
-
 	m.Group("/organizations/:organization_id", func(m martini.Router) {
 		o.subControllers.Initialize(m)
 	}, UserRequired, SetupOrganization)
