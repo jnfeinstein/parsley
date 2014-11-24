@@ -6,7 +6,8 @@ var WebAPI = require('./util').WebAPI;
 var Components = require('./components');
 var DashboardComponent = Components.Dashboard;
 var OrganizationComponent = Components.Organization;
-var SidebarComponent = Components.Sidebar;
+var PrimaryNavbarComponent = Components.PrimaryNavbar;
+var SecondaryNavbarComponent = Components.SecondaryNavbar;
 var ErrorComponent = Components.Error;
 
 var Stores = require('./stores');
@@ -28,6 +29,7 @@ var AppComponent = React.createClass({
   mixins: [RouterMixin],
   routes: {
     '/parsley': 'dashboard',
+    '/parsley/recipes': 'recipes',
     '/parsley/ingredients': 'ingredients',
     '/parsley/suppliers': 'suppliers',
     '/parsley/organizations/:id': 'organizations'
@@ -57,7 +59,8 @@ var AppComponent = React.createClass({
 
     return (
       <div>
-        <SidebarComponent organizations={this.state.organizations} />
+        <PrimaryNavbarComponent organizations={this.state.organizations} />
+        {CurrentOrganizationStore.get() && <SecondaryNavbarComponent />}
         <div className="app-container">
           {rez}
         </div>
@@ -68,7 +71,10 @@ var AppComponent = React.createClass({
     return <ErrorComponent message={this.state.error} />
   },
   dashboard: function() {
-    return <DashboardComponent />
+    return <DashboardComponent />;
+  },
+  recipes: function() {
+    return <div>Recipes</div>;
   },
   ingredients: function() {
     return <div>Ingredients</div>;

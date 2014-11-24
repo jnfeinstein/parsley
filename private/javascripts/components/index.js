@@ -2,6 +2,7 @@ module.exports = {
 	Dashboard: require('./Dashboard'),
 	NavItem: require('./NavItem'),
 	Organization: require('./Organizations'),
-	Sidebar: require('./Sidebar'),
+	PrimaryNavbar: require('./PrimaryNavbar'),
+  SecondaryNavbar: require('./SecondaryNavbar'),
 	Error: require('./Error')
 };

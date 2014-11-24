@@ -2,10 +2,10 @@ var _ = require('underscore');
 var Model = require('./Model');
 
 var Organization = Model.extend({
-	link: function() {
+	Link: function() {
 		return Organization.url + "/" + this.get('id');
 	},
-  name: function() {
+  Name: function() {
     return this.get('name');
   }
 }, {

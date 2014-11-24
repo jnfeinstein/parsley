@@ -1,17 +1,37 @@
 var NavItem = require('./NavItem');
+var Dispatcher = require('../dispatcher');
+var ActionTypes = require('../constants').ActionTypes;
 
-var SidebarComponent = React.createClass({
+var CurrentOrganizationStore = require('../stores').CurrentOrganization;
+
+var navigate = require('react-mini-router').navigate;
+
+var OrganizationNavItem = React.createClass({
+  render: function() {
+    var isCurrent = this.props.organization == CurrentOrganizationStore.get();
+    return <NavItem className={isCurrent && 'current'} title={this.props.organization.Name()} onClick={this.clicked} />;
+  },
+  clicked: function() {
+    Dispatcher.handleViewAction({
+      type: ActionTypes.CHANGED_CURRENT_ORGANIZATION,
+      organization: this.props.organization
+    });
+    navigate(basepath);
+  }
+});
+
+var PrimaryNavbarComponent = React.createClass({
   render: function() {
     var orgLinks = this.props.organizations.map(function(org, i) {
-      return <NavItem key={i} href={basepath + org.link(basepath)} title={org.name()} onClick={this.orgLinkClicked} />;
+      return <OrganizationNavItem key={org.get('id')} organization={org} />
     });
 
     return (
-      <div className="sidebar-container">
+      <div className="primary-navbar-container">
         <nav className="navbar navbar-default" role="navigation">
           <div className="container-fluid">
             <div className="navbar-header">
-              <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#parsley-navbar">
+              <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#primary-navbar">
                 <span className="sr-only">Toggle navigation</span>
                 <span className="icon-bar"></span>
                 <span className="icon-bar"></span>
@@ -20,7 +40,7 @@ var SidebarComponent = React.createClass({
               <a className="navbar-brand" href={basepath}>Parsley</a>
             </div>
 
-            <div className="collapse navbar-collapse" id="parsley-navbar">
+            <div className="collapse navbar-collapse" id="primary-navbar">
               <ul className="nav navbar-nav">
                 <li className="dropdown">
                   <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Organizations<span className="caret"></span></a>
@@ -39,10 +59,7 @@ var SidebarComponent = React.createClass({
         </nav>
       </div>
     );
-  },
-  orgLinkClicked: function(e) {
-
   }
 });
 
-module.exports = SidebarComponent;
+module.exports = PrimaryNavbarComponent;

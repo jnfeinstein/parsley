@@ -70,9 +70,7 @@ var OrganizationComponent = React.createClass({
     }
 
     return (
-      <div>
-        <h3>{this.state.organization.name()}</h3>
-      </div>
+      <div>{this.state.organization.Name()}</div>
     );
   },
   getOrganization: function(id) {

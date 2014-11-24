@@ -42,5 +42,11 @@ module.exports = {
       });
       navigate(basepath);
     });
+  },
+  GetOrganizationDetails: function(org) {
+    $.getJSON(org.Link())
+    .done(function(data) {
+      
+    });
   }
 }

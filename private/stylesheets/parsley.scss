@@ -1,16 +1,43 @@
-div.sidebar-container {
-	background-color: lightyellow;
+div.primary-navbar-container nav {
+  margin-bottom: 0px;
+
+  > div.container-fluid {
+    background-color: lightyellow;
+  }
+
+  .create-new a {
+    font-weight: bold;
+  }
+
+  .current a {
+    font-weight: bold;
+  }
 }
 
 div.app-container {
-}
 
-li.create-new a {
-	font-weight: bold;
 }
 
 div.organization-editor-container {
 	table.edit-table tbody td {
 		padding-bottom: 1em;
 	}
+}
+
+@media (min-width: 768px) {
+  div.secondary-navbar-container {
+    .organization-name {
+      font-weight: bold;
+    }
+
+    .navbar .navbar-nav {
+      display: inline-block;
+      float: none;
+      vertical-align: top;
+    }
+
+    .navbar .navbar-collapse {
+      text-align: center;
+    }
+  }
 }

@@ -2,7 +2,7 @@ var _ = require('underscore');
 var Model = require('./Model');
 
 var User = Model.extend({
-	link: function() {
+	Link: function() {
 		return "/" + User.url + "/" + this.get('id');
 	}
 }, {
