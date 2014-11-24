@@ -1,28 +1,27 @@
-var NavItem = require('./NavItem');
+var ReactBootstrap = require('react-bootstrap');
+var Nav = ReactBootstrap.Nav;
+var Navbar = ReactBootstrap.Navbar;
+var NavItem = ReactBootstrap.NavItem;
 
 var PrimaryNavbarComponent = React.createClass({
   render: function() {
+    var brand = <a className="navbar-brand" href={basepath}>Parsley</a>;
+    var toggleButton = (
+      <button>
+        <span className="sr-only">Toggle navigation</span>
+        <span className="icon-bar"></span>
+        <span className="icon-bar"></span>
+        <span className="icon-bar"></span>
+      </button>
+    );
+
     return (
       <div className="primary-navbar-container">
-        <nav className="navbar navbar-default" role="navigation">
-          <div className="container-fluid">
-            <div className="navbar-header">
-              <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#primary-navbar">
-                <span className="sr-only">Toggle navigation</span>
-                <span className="icon-bar"></span>
-                <span className="icon-bar"></span>
-                <span className="icon-bar"></span>
-              </button>
-              <a className="navbar-brand" href={basepath}>Parsley</a>
-            </div>
-
-            <div className="collapse navbar-collapse" id="primary-navbar">
-              <ul className="nav navbar-nav navbar-right">
-                <NavItem href='/logout' title="Log out" />
-              </ul>
-            </div>
-          </div>
-        </nav>
+        <Navbar fluid brand={brand} toggleButton={toggleButton}>
+          <Nav right>
+            <NavItem eventKey={1} href="/logout">Log out</NavItem>
+          </Nav>
+        </Navbar>
       </div>
     );
   }

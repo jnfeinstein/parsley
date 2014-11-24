@@ -1,47 +1,37 @@
-var NavItem = require('./NavItem');
+var ReactBootstrap = require('react-bootstrap');
+var Nav = ReactBootstrap.Nav;
+var Navbar = ReactBootstrap.Navbar;
+var NavItem = ReactBootstrap.NavItem;
+var MenuItem = ReactBootstrap.MenuItem;
+var DropdownButton = ReactBootstrap.DropdownButton;
+
+var Organization = require('../models').Organization;
 
 var SecondaryNavbar = React.createClass({
   render: function() {
     var self = this;
 
     var orgLinks = this.props.organizations.map(function(org, i) {
+      var id = org.get('id');
       var isCurrent = org == self.props.currentOrganization;
-      return <NavItem key={org.get('id')} className={isCurrent && 'current'} href={basepath + org.Link()} title={org.Name()} />;
+      return <NavItem eventKey={id} key={id} className={isCurrent && 'current'} href={basepath + org.Link()}>{org.Name()}</NavItem>;
     });
-
     return (
       <div className="secondary-navbar-container">
-        <nav className="navbar navbar-default" role="navigation">
-          <div className="container-fluid">
-            <div className="navbar-header">
-              <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#secondary-navbar">
-                <span className="sr-only">Toggle navigation</span>
-                <span className="icon-bar"></span>
-                <span className="icon-bar"></span>
-                <span className="icon-bar"></span>
-              </button>
-            </div>
-
-            <div className="collapse navbar-collapse" id="secondary-navbar">
-              <ul className="nav navbar-nav">
-                <li className="dropdown">
-                  <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{this.props.currentOrganization.Name()}<span className="caret"></span></a>
-                  <ul className="dropdown-menu" role="menu">
-                    {orgLinks}
-                    <li className="divider"></li>
-                    <NavItem className="create-new" key="new" href={basepath + "/organizations/new"} title="Create new" />
-                  </ul>
-                </li>
-                <li className="divider-vertical"></li>
-                <NavItem href={basepath + '/recipes'} title="Recipes" />
-                <li className="divider-vertical"></li>
-                <NavItem href={basepath + '/ingredients'} title="Ingredients" />
-                <li className="divider-vertical"></li>
-                <NavItem href={basepath + '/suppliers'} title="Suppliers" />
-              </ul>
-            </div>
-          </div>
-        </nav>
+        <Navbar fluid>
+          <Nav>
+            <DropdownButton eventKey={1} title={this.props.currentOrganization.Name()}>
+              {orgLinks}
+              <NavItem className='create-new' eventKey='new' href={basepath + Organization.url + '/new'}>Create new</NavItem>
+            </DropdownButton>
+            <MenuItem divider className='divider-vertical' />
+            <NavItem eventKey={2} href={basepath + '/recipes'}>Recipes</NavItem>
+            <MenuItem divider className='divider-vertical'/>
+            <NavItem eventKey={3} href={basepath + '/ingredients'}>Ingredients</NavItem>
+            <MenuItem divider className='divider-vertical' />
+            <NavItem eventKey={4} href={basepath + '/suppliers'}>Suppliers</NavItem>
+          </Nav>
+        </Navbar>
       </div>
     );
   }

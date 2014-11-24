@@ -1,8 +1,16 @@
 require('./lib/Pack');
 window.basepath = '/welcome';
 
+var ReactBootstrap = require('react-bootstrap');
+var Nav = ReactBootstrap.Nav;
+var Navbar = ReactBootstrap.Navbar;
+var NavItem = ReactBootstrap.NavItem;
+
+var Router = require("react-router-component");
+var Locations = Router.Locations;
+var Location = Router.Location;
+
 var Helpers = require('./lib').Helpers;
-var NavItemComponent = require('./components').NavItem;
 
 function popupWindow(url, title, w, h) {
   var left = (screen.width/2)-(w/2);
@@ -32,6 +40,26 @@ function login() {
   };
 }
 
+var AboutComponent = React.createClass({
+  render: function() {
+    return (
+      <div className="about">
+        About!
+      </div>
+    );
+  }
+});
+
+var ContactComponent = React.createClass({
+  render: function() {
+    return (
+      <div className="contact">
+        Contact!
+      </div>
+    );
+  }
+});
+
 var WelcomeComponent = React.createClass({
   render: function() {
     return (
@@ -49,7 +77,6 @@ var WelcomeComponent = React.createClass({
 });
 
 var AppComponent = React.createClass({
-  mixins: [RouterMixin],
   routes: {
     '/': 'welcome',
     '/welcome': 'welcome',
@@ -57,44 +84,38 @@ var AppComponent = React.createClass({
     '/welcome/contact': 'contact'
   },
   render: function() {
-    return (
-      <div>
-        <nav className="navbar navbar-default" role="navigation">
-          <div className="container-fluid">
-            <div className="navbar-header">
-              <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#welcome-navbar">
-                <span className="sr-only">Toggle navigation</span>
-                <span className="icon-bar"></span>
-                <span className="icon-bar"></span>
-                <span className="icon-bar"></span>
-              </button>
-              <a className="navbar-brand" href={basepath}>Parsley</a>
-            </div>
+    var brand = <a className="navbar-brand" href={basepath}>Parsley</a>;
+    var toggleButton = (
+      <button>
+        <span className="sr-only">Toggle navigation</span>
+        <span className="icon-bar"></span>
+        <span className="icon-bar"></span>
+        <span className="icon-bar"></span>
+      </button>
+    );
 
-            <div className="collapse navbar-collapse" id="welcome-navbar">
-              <ul className="nav navbar-nav">
-                <NavItemComponent href={basepath + '/about'} title="About" />
-                <NavItemComponent href={basepath + '/contact'} title="Contact" />
-              </ul>
-              <ul className="nav navbar-nav navbar-right">
-                <NavItemComponent href={'#'} title="Sign up" onClick={login} />
-                <NavItemComponent href={'#'} title="Log in" onClick={login} />
-              </ul>
-            </div>
-          </div>
-        </nav>
-        {this.renderCurrentRoute()}
+    return (
+      <div className="app-container">
+        <div className="primary-navbar-container">
+          <Navbar fluid brand={brand} toggleButton={toggleButton}>
+            <Nav>
+              <NavItem eventKey={1} href={basepath + '/about'}>About</NavItem>
+              <NavItem eventKey={2} href={basepath + '/contact'}>Contact</NavItem>
+            </Nav>
+            <Nav right>
+              <NavItem eventKey={3} href='#' onClick={login}>Sign up</NavItem>
+              <NavItem eventKey={4} href='#' onClick={login}>Log in</NavItem>
+            </Nav>
+          </Navbar>
+        </div>
+        <Locations>
+          <Location path="/" handler={WelcomeComponent} />
+          <Location path={basepath} handler={WelcomeComponent} />
+          <Location path={basepath + "/about"} handler={AboutComponent} />
+          <Location path={basepath + "/contact"} handler={ContactComponent} />
+        </Locations>
       </div>
     );
-  },
-  welcome: function() {
-    return <WelcomeComponent />
-  },
-  about: function() {
-    return <div>About</div>;
-  },
-  contact: function() {
-    return <div>Contact</div>;
   }
 });
 

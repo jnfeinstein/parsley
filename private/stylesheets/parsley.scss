@@ -16,28 +16,36 @@ div.organization-editor-container {
 	}
 }
 
+div.secondary-navbar-container {
+  .organization-name {
+    font-weight: bold;
+  }
+
+  .create-new a {
+    font-weight: bold;
+  }
+
+  .current a {
+    font-weight: bold;
+  }
+}
+
+div.organization-accordion-container {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+// This will center the menu items on web version
 @media (min-width: 768px) {
   div.secondary-navbar-container {
-    .organization-name {
-      font-weight: bold;
-    }
-
     .navbar .navbar-nav {
       display: inline-block;
       float: none;
       vertical-align: top;
     }
 
-    .navbar .navbar-collapse {
+    .navbar .container-fluid {
       text-align: center;
-    }
-
-    .create-new a {
-      font-weight: bold;
-    }
-
-    .current a {
-      font-weight: bold;
     }
   }
 }

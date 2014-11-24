@@ -1,4 +1,4 @@
-var $ = require('jquery');
+require('zepto-full');
 var Dispatcher = require('../dispatcher');
 var Constants = require('../constants');
 var ActionTypes = Constants.ActionTypes;

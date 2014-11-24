@@ -1,7 +1,6 @@
-window.jQuery = window.$ = require('jquery');
+require('zepto-full');
 window._ = require('underscore');
 window.React = require('react/addons');
-require('bootstrap-sass/assets/javascripts/bootstrap');
 
 window.basepath = '/';
 

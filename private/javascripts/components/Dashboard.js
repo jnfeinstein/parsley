@@ -2,43 +2,38 @@ var Stores = require('../stores');
 var CurrentUserStore = Stores.CurrentUser;
 var OrganizationStore = Stores.Organizations;
 
-var NavItem = require('./NavItem');
+var ReactBootstrap = require('react-bootstrap');
+var Accordion = ReactBootstrap.Accordion;
+var Panel = ReactBootstrap.Panel;
+var Link = require('react-router-component').Link;
+
+var Organization = require('../models').Organization;
 
 var OrganizationPanel = React.createClass({
   render: function() {
-    var id = this.props.organization.get('id');
-
     return (
-      <div className="panel panel-default">
-        <div className="panel-heading" role="tab" id={'heading' + id}>
-          <h4 className="panel-title">
-            <a data-toggle="collapse" data-parent="#org-accordion" href={'#' + id} aria-expanded="false" aria-controls={'collapse' + id}>
-              {this.props.organization.Name()}
-            </a>
-          </h4>
-        </div>
-        <div id={'collapse' + id} className="panel-collapse collapse in" role="tabpanel" aria-labelledby={'heading' + id}>
-          <div className="panel-body">
-            {this.props.organization.Name()}
-          </div>
-        </div>
-      </div>
+      <Panel header={this.props.organization.Name()}>
+        {this.props.organization.Name()}
+      </Panel>
     );
   }
 });
 
-var OrganizationTable = React.createClass({
+var OrganizationAccordion = React.createClass({
   render: function() {
     var orgPanels = _.map(this.props.organizations, function(org) {
-      return <OrganizationPanel key={org.get('id')} organization={org} />;
+      return (
+        <Panel key={org.get('id')} eventKey={org.get('id')} header={org.Name()}>
+          <a href={basepath + org.Link()}>Manage {org.Name()}</a>
+        </Panel>
+      );
     });
 
-
     return (
-      <div className="organization-table-container">
-        <div className="panel-group" id="org-accordion" role="tablist" aria-multiselectable="true">
+      <div className="organization-accordion-container">
+        <Accordion>
           {orgPanels}
-        </div>
+        </Accordion>
       </div>
     );
   }
@@ -60,12 +55,28 @@ var DashboardComponent = React.createClass({
     OrganizationStore.removeChangeListener(this.updateStateFromStores);
   },
   render: function() {
+    var rez;
+    if (!this.state.organizations.length) {
+      rez = (
+        <Link href={basepath + Organization.url + '/new'}>Create your first organization</Link>
+      );
+    } else {
+      rez = (
+        <div>
+          <div>
+            You have {this.state.organizations.length} organization{this.state.organizations.length > 1 && 's'}
+            <br />
+            <Link href={basepath + Organization.url + '/new'}>Create another organization</Link>
+          </div>
+          <br />
+          <OrganizationAccordion organizations={this.state.organizations} />
+        </div>
+      );
+    }
     return (
       <div className="dashboard-container">
         <h4>Welcome to Parsley, {this.state.currentUser.Name()}</h4>
-        <br />
-        <div>You have {this.state.organizations.length} organization{this.state.organizations.length > 1 && 's'}</div>
-        <OrganizationTable organizations={this.state.organizations} />
+        {rez}
       </div>
     );
   },
