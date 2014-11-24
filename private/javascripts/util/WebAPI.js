@@ -1,3 +1,4 @@
+var $ = require('jquery');
 var Dispatcher = require('../dispatcher');
 var Constants = require('../constants');
 var ActionTypes = Constants.ActionTypes;
@@ -9,8 +10,6 @@ var Organization = Models.Organization;
 
 var Stores = require('../stores');
 var OrganizationStore = Stores.Organizations;
-
-var navigate = require('react-mini-router').navigate;
 
 module.exports = {
 	GetCurrentUser: function() {
@@ -40,7 +39,7 @@ module.exports = {
         type: ActionTypes.CHANGED_CURRENT_ORGANIZATION,
         organization: newOrganization
       });
-      navigate(basepath);
+      window.location = basepath + newOrganization.Link();
     });
   },
   GetOrganizationDetails: function(org) {

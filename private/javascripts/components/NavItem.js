@@ -1,7 +1,10 @@
+var Router = require('react-router-component');
+var Link = Router.Link;
+
 var NavItem = React.createClass({
   render: function() {
     return (
-      <li className={this.props.className}><a href={this.props.href} onClick={this.props.onClick}>{this.props.title}</a></li>
+      <li className={this.props.className}><Link href={this.props.href}>{this.props.title}</Link></li>
     );
   }
 });

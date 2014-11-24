@@ -2,18 +2,25 @@ require('./lib/Pack');
 window.basepath = '/parsley';
 
 var WebAPI = require('./util').WebAPI;
+var Constants = require('./constants');
 
 var Components = require('./components');
 var DashboardComponent = Components.Dashboard;
 var OrganizationComponent = Components.Organization;
 var PrimaryNavbarComponent = Components.PrimaryNavbar;
-var SecondaryNavbarComponent = Components.SecondaryNavbar;
 var ErrorComponent = Components.Error;
 
 var Stores = require('./stores');
 var CurrentUserStore = Stores.CurrentUser;
 var OrganizationStore = Stores.Organizations;
 var CurrentOrganizationStore = Stores.CurrentOrganization;
+
+var Models = require('./models');
+var Organization = Models.Organization;
+
+var Router = require("react-router-component");
+var Locations = Router.Locations;
+var Location = Router.Location;
 
 var LoadingComponet = React.createClass({
   render: function() {
@@ -26,14 +33,6 @@ var LoadingComponet = React.createClass({
 });
 
 var AppComponent = React.createClass({
-  mixins: [RouterMixin],
-  routes: {
-    '/parsley': 'dashboard',
-    '/parsley/recipes': 'recipes',
-    '/parsley/ingredients': 'ingredients',
-    '/parsley/suppliers': 'suppliers',
-    '/parsley/organizations/:id': 'organizations'
-  },
   componentDidMount: function() {
     CurrentUserStore.addChangeListener(this.updateStateFromStores);
     CurrentOrganizationStore.addChangeListener(this.updateStateFromStores);
@@ -53,37 +52,19 @@ var AppComponent = React.createClass({
       rez = <LoadingComponet />;
     } else if (this.state.error) {
       rez = <ErrorComponent message={this.props.error} />;
-    } else {
-      rez = this.renderCurrentRoute();
     }
 
     return (
       <div>
         <PrimaryNavbarComponent organizations={this.state.organizations} />
-        {CurrentOrganizationStore.get() && <SecondaryNavbarComponent />}
         <div className="app-container">
-          {rez}
+          <Locations>
+            <Location path={basepath} handler={DashboardComponent} />
+            <Location path={basepath + Organization.url + "/:id"} handler={OrganizationComponent} />
+          </Locations>
         </div>
       </div>
     );
-  },
-  error: function() {
-    return <ErrorComponent message={this.state.error} />
-  },
-  dashboard: function() {
-    return <DashboardComponent />;
-  },
-  recipes: function() {
-    return <div>Recipes</div>;
-  },
-  ingredients: function() {
-    return <div>Ingredients</div>;
-  },
-  suppliers: function() {
-    return <div>Suppliers</div>;
-  },
-  organizations: function(id) {
-    return <OrganizationComponent id={id} />;
   },
   updateStateFromStores: function() {
     this.setState({

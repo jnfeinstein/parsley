@@ -6,3 +6,4 @@ public/stylesheets
 tmp
 .sass-cache
 .wercker
+npm-debug.log

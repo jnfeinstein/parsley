@@ -1,7 +1,5 @@
 var NavItem = require('./NavItem');
 
-var CurrentOrganizationStore = require('../stores').CurrentOrganization;
-
 var SecondaryNavbar = React.createClass({
   render: function() {
     return (
@@ -19,7 +17,7 @@ var SecondaryNavbar = React.createClass({
 
             <div className="collapse navbar-collapse" id="secondary-navbar">
               <ul className="nav navbar-nav">
-                <li><p className="navbar-text organization-name">{CurrentOrganizationStore.get().Name()}</p></li>
+                <li><p className="navbar-text organization-name">{this.props.organization.Name()}</p></li>
                 <li className="divider-vertical"></li>
                 <NavItem href={basepath + '/recipes'} title="Recipes" />
                 <li className="divider-vertical"></li>

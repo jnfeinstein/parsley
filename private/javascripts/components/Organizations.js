@@ -3,9 +3,12 @@ var React = require('react');
 var Helpers = require('../lib').Helpers;
 var WebAPI = require('../util').WebAPI;
 
+var Constants = require('../constants');
+
 var Organization = require('../models').Organization;
 var OrganizationStore = require('../stores').Organizations;
 
+var SecondaryNavbarComponent = require('./SecondaryNavbar');
 var ErrorComponent = require('./Error');
 
 var InputFieldComponent = React.createClass({
@@ -35,7 +38,7 @@ var OrganizationEditorComponent = React.createClass({
       <div className="organization-editor-container">
         <h3>{headerText}</h3>
         <table className="edit-table">
-          <InputFieldComponent title="Name" type='text' size="35" ref="name" value={this.props.organization.name()} />
+          <InputFieldComponent title="Name" type='text' size="35" ref="name" value={this.props.organization.Name()} />
           <tr>
             <td><button className="btn btn-sm btn-primary" onClick={this.submitClicked}>Submit</button></td>
           </tr>
@@ -70,7 +73,10 @@ var OrganizationComponent = React.createClass({
     }
 
     return (
-      <div>{this.state.organization.Name()}</div>
+      <div>
+        <SecondaryNavbarComponent organization={this.state.organization} />
+        {this.state.organization.Name()}
+      </div>
     );
   },
   getOrganization: function(id) {

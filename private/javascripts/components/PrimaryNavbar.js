@@ -4,19 +4,10 @@ var ActionTypes = require('../constants').ActionTypes;
 
 var CurrentOrganizationStore = require('../stores').CurrentOrganization;
 
-var navigate = require('react-mini-router').navigate;
-
 var OrganizationNavItem = React.createClass({
   render: function() {
     var isCurrent = this.props.organization == CurrentOrganizationStore.get();
-    return <NavItem className={isCurrent && 'current'} title={this.props.organization.Name()} onClick={this.clicked} />;
-  },
-  clicked: function() {
-    Dispatcher.handleViewAction({
-      type: ActionTypes.CHANGED_CURRENT_ORGANIZATION,
-      organization: this.props.organization
-    });
-    navigate(basepath);
+    return <NavItem className={isCurrent && 'current'} href={basepath + this.props.organization.Link()} title={this.props.organization.Name()} onClick={this.clicked} />;
   }
 });
 
