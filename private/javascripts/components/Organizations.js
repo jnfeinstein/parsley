@@ -20,13 +20,13 @@ var OrganizationEditorComponent = React.createClass({
         <table className="edit-table">
           <InputFieldComponent title="Name" type='text' size="35" ref="name" value={this.props.organization.Name()} />
           <tr>
-            <td><button className="btn btn-sm btn-primary" onClick={this.submitClicked}>Submit</button></td>
+            <td><button className="btn btn-sm btn-primary" onClick={this.saveClicked}>Save</button></td>
           </tr>
         </table>
       </div>
     );
   },
-  submitClicked: function() {
+  saveClicked: function() {
     var values = Helpers.GetValues(this.refs);
     if (this.props.organization.isNew()) {
       WebAPI.CreateOrganization(values);
