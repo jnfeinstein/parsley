@@ -21,7 +21,7 @@ CurrentUserStore.prototype = assign({}, Store.prototype, {
     var action = payload.action;
 
     switch(action.type) {
-      case ActionTypes.RECEIVE_CURRENT_USER:
+      case ActionTypes.RECEIVED_CURRENT_USER:
         this.set(action.user);
         this.emitChange();
         break;

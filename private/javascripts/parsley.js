@@ -89,7 +89,7 @@ var AppComponent = React.createClass({
 });
 
 $(function() {
-  WebAPI.getCurrentUser();
+  WebAPI.GetCurrentUser();
 
   React.render(
     <AppComponent history={true} />,

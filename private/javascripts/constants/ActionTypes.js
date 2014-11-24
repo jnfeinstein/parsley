@@ -1,7 +1,8 @@
 var keyMirror = require('keymirror');
 
 module.exports = keyMirror({
-  RECEIVE_CURRENT_USER: null,
-  RECEIVE_CURRENT_ORGANIZATION: null,
-  RECEIVE_ORGANIZATIONS: null
+  RECEIVED_CURRENT_USER: null,
+  CHANGED_CURRENT_ORGANIZATION: null,
+  RECEIVED_ORGANIZATIONS: null,
+  CREATED_ORGANIZATION: null
 });

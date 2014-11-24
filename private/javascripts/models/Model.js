@@ -26,8 +26,11 @@ Model.prototype = {
 		return this.attributes[attr];
 	},
   isNew: function() {
-    return _.isEmpty(this.get('id'));
-  }
+    return !this.has('id');
+  },
+  has: function(attr) {
+    return this.get(attr) != null;
+  },
 }
 
 Model.extend = function(protoProps, staticProps) {

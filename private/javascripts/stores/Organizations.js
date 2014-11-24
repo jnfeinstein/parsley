@@ -27,12 +27,19 @@ OrganizationStore.prototype = assign({}, Store.prototype, {
       this.organizations_ = organizations;
     }
   },
+  add: function(org) {
+    this.organizations_.push(org);
+  },
   dispatcherCallback: function(payload) {
     var action = payload.action;
 
     switch(action.type) {
-      case ActionTypes.RECEIVE_ORGANIZATIONS:
+      case ActionTypes.RECEIVED_ORGANIZATIONS:
         this.reset(action.organizations);
+        this.emitChange();
+        break;
+      case ActionTypes.CREATED_ORGANIZATION:
+        this.add(action.organization);
         this.emitChange();
         break;
       default:

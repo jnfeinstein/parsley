@@ -29,5 +29,12 @@ module.exports = {
     } else {
       return new model(data);
     }
+  },
+  GetValues: function(refs) {
+    var values = {};
+    _.each(refs, function(ref, attr) {
+      values[attr] = ref.state.value;      
+    });
+    return values;
   }
 };

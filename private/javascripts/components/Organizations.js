@@ -1,7 +1,10 @@
 var _ = require('underscore');
 var React = require('react');
+var Helpers = require('../lib').Helpers;
+var WebAPI = require('../util').WebAPI;
 
-var OrganizationModel = require('../models').Organization;
+var Organization = require('../models').Organization;
+var OrganizationStore = require('../stores').Organizations;
 
 var ErrorComponent = require('./Error');
 
@@ -41,23 +44,23 @@ var OrganizationEditorComponent = React.createClass({
     );
   },
   submitClicked: function() {
-
+    var values = Helpers.GetValues(this.refs);
+    if (this.props.organization.isNew()) {
+      WebAPI.CreateOrganization(values);
+    }
   }
 });
 
 var OrganizationComponent = React.createClass({
   getInitialState: function() {
-    var org;
-
-    if (this.props.id == 'new') {
-      org = new OrganizationModel();
-    } else {
-      org = OrganizationStore.get(id);
-    }
-
     return {
-      organization: org
+      organization: this.getOrganization(this.props.id)
     };
+  },
+  componentWillReceiveProps: function(nextProps) {
+    this.setState({
+      organization: this.getOrganization(nextProps.id)
+    });
   },
   render: function() {
     if (_.isEmpty(this.state.organization)) {
@@ -71,6 +74,13 @@ var OrganizationComponent = React.createClass({
         <h3>{this.state.organization.name()}</h3>
       </div>
     );
+  },
+  getOrganization: function(id) {
+    if (id == 'new') {
+      return new Organization();
+    } else {
+      return OrganizationStore.get(id);
+    }
   }
 });
 

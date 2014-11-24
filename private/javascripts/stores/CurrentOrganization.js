@@ -21,7 +21,7 @@ CurrentOrganizationStore.prototype = assign({}, Store.prototype, {
     var action = payload.action;
 
     switch(action.type) {
-      case ActionTypes.RECEIVE_CURRENT_ORGANIZATION:
+      case ActionTypes.CHANGED_CURRENT_ORGANIZATION:
         this.set(action.organization);
         this.emitChange();
         break;
