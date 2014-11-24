@@ -47,6 +47,12 @@ func serverRun(cmd *Command, args ...string) {
 		Layout: "app",
 	}))
 
+	m.Use(oauth2.Google(
+		goauth2.Client("242182491314-3kv6lg5gbqi3tcfp42fr2s1kvqkg09ih.apps.googleusercontent.com", "QJUY1sHMJhoZlJ6E10W9cJqz"),
+		goauth2.RedirectURL(config.Url()+"/oauth2callback"),
+		goauth2.Scope("profile", "email"),
+	))
+
 	for _, c := range internals.AllControllers {
 		c.Initialize(m)
 	}
