@@ -97,12 +97,12 @@ var AppComponent = React.createClass({
     return (
       <div className="app-container">
         <div className="primary-navbar-container">
-          <Navbar fluid brand={brand} toggleButton={toggleButton}>
-            <Nav>
+          <Navbar fluid brand={brand} toggleButton={toggleButton} toggleNavKey={1}>
+            <Nav eventKey={1}>
               <NavItem eventKey={1} href={basepath + '/about'}>About</NavItem>
               <NavItem eventKey={2} href={basepath + '/contact'}>Contact</NavItem>
             </Nav>
-            <Nav right>
+            <Nav right eventKey={1}>
               <NavItem eventKey={3} href='#' onSelect={login}>Sign up</NavItem>
               <NavItem eventKey={4} href='#' onSelect={login}>Log in</NavItem>
             </Nav>
