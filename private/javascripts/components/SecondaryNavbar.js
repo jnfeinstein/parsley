@@ -25,6 +25,8 @@ var SecondaryNavbar = React.createClass({
       var isCurrent = org == self.props.currentOrganization;
       return <NavItem eventKey={id} key={id} className={isCurrent && 'current'} href={basepath + org.Link()}>{org.Name()}</NavItem>;
     });
+    var curOrgUrl = basepath + this.props.currentOrganization.Link();
+
     return (
       <div className="secondary-navbar-container">
         <Navbar fluid toggleButton={toggleButton} toggleNavKey={1}>
@@ -34,11 +36,11 @@ var SecondaryNavbar = React.createClass({
               <NavItem className='create-new' eventKey='new' href={basepath + Organization.url + '/new'}>Create new</NavItem>
             </DropdownButton>
             <MenuItem divider className='divider-vertical' />
-            <NavItem eventKey={2} href={basepath + '/recipes'}>Recipes</NavItem>
+            <NavItem eventKey={2} href={curOrgUrl + '/recipes'}>Recipes</NavItem>
             <MenuItem divider className='divider-vertical'/>
-            <NavItem eventKey={3} href={basepath + '/ingredients'}>Ingredients</NavItem>
+            <NavItem eventKey={3} href={curOrgUrl + '/ingredients'}>Ingredients</NavItem>
             <MenuItem divider className='divider-vertical' />
-            <NavItem eventKey={4} href={basepath + '/suppliers'}>Suppliers</NavItem>
+            <NavItem eventKey={4} href={curOrgUrl + '/suppliers'}>Suppliers</NavItem>
           </Nav>
         </Navbar>
       </div>
