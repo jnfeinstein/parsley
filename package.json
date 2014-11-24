@@ -4,14 +4,14 @@
   "version": "0.0.1",
   "dependencies": {
     "bootstrap-sass": "^3.3.1",
+    "component-ajax": "0.0.2",
     "flux": "^2.0.1",
     "keymirror": "^0.1.0",
     "object-assign": "^2.0.0",
     "react": "^0.12.1",
     "react-bootstrap": "^0.13.0",
     "react-router-component": "git://github.com/STRML/react-router-component.git#react-0.12",
-    "underscore": "^1.7.0",
-    "zepto-full": "^1.1.2"
+    "underscore": "^1.7.0"
   },
   "devDependencies": {
     "del": "^0.1.3",

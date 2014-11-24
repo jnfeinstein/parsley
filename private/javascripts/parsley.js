@@ -63,11 +63,8 @@ var AppComponent = React.createClass({
   }
 });
 
-$(function() {
-  WebAPI.GetCurrentUser();
-
-  React.render(
-    <AppComponent history={true} />,
-    document.getElementById('interface')
-  );
-});
+WebAPI.GetCurrentUser();
+React.render(
+  <AppComponent history={true} />,
+  document.getElementById('interface')
+);

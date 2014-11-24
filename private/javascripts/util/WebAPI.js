@@ -1,4 +1,4 @@
-require('zepto-full');
+var ajax = require('component-ajax');
 var Dispatcher = require('../dispatcher');
 var Constants = require('../constants');
 var ActionTypes = Constants.ActionTypes;
@@ -13,23 +13,21 @@ var OrganizationStore = Stores.Organizations;
 
 module.exports = {
 	GetCurrentUser: function() {
-		$.getJSON(User.url + '/me')
-		.done(function(user) {
-			Dispatcher.handleServerAction({
-				type: ActionTypes.RECEIVED_CURRENT_USER,
-				user: Helpers.Make(Models.User, user)
-			});
+		ajax.getJSON(User.url + '/me', function(user) {
+      Dispatcher.handleServerAction({
+        type: ActionTypes.RECEIVED_CURRENT_USER,
+        user: Helpers.Make(Models.User, user)
+      });
 
-			var organizations = Helpers.Make(Models.Organization, user.organizations);
-			Dispatcher.handleServerAction({
-				type: ActionTypes.RECEIVED_ORGANIZATIONS,
-				organizations: organizations
-			});
-		})
+      var organizations = Helpers.Make(Models.Organization, user.organizations);
+      Dispatcher.handleServerAction({
+        type: ActionTypes.RECEIVED_ORGANIZATIONS,
+        organizations: organizations
+      });
+    });
 	},
   CreateOrganization: function(data) {
-    $.postJSON(Organization.url, data)
-    .done(function(reply) {
+    ajax.postJSON(Organization.url, data, function(reply) {
       var newOrganization = new Organization(reply);
       Dispatcher.handleServerAction({
         type: ActionTypes.CREATED_ORGANIZATION,
@@ -39,7 +37,7 @@ module.exports = {
     });
   },
   GetOrganizationDetails: function(org) {
-    $.getJSON(org.Link())
+    ajax.getJSON(org.Link())
     .done(function(data) {
       
     });

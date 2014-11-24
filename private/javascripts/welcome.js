@@ -119,9 +119,7 @@ var AppComponent = React.createClass({
   }
 });
 
-$(function() {
-  React.render(
-    <AppComponent history={true} />,
-    document.getElementById('interface')
-  );
-});
+React.render(
+  <AppComponent history={true} />,
+  document.getElementById('interface')
+);
