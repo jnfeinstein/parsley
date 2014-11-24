@@ -38,3 +38,22 @@ type Measurement struct {
 	*Unit
 }
 
+func (m *Measurement) Divide(o *Measurement) (ratio float64, err error) {
+	if m.DimensionId != o.DimensionId {
+		err = fmt.Errorf("dividing measurements with mismatching units %s and %s", m.Unit.Name, o.Unit.Name)
+		return
+	}
+
+	ratio = (m.Multiplier / o.Multiplier) * (m.Amount / o.Amount)
+    return
+}
+
+func (m *Measurement) Convert(u *Unit) (r Measurement, err error) {
+	if m.DimensionId != u.DimensionId {
+		err = fmt.Errorf("converting measurements with mismatching units %s and %s", m.Unit.Name, u.Name)
+		return
+	}
+
+	r = Measurement{Amount: m.Amount * m.Multiplier / u.Multiplier, Unit: u}
+    return
+}
