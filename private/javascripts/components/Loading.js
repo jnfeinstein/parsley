@@ -1,4 +1,4 @@
-var LoadingComponet = React.createClass({
+var LoadingComponent = React.createClass({
   render: function() {
     return (
       <div>
@@ -8,4 +8,4 @@ var LoadingComponet = React.createClass({
   }
 });
 
-module.exports = LoadingComponet;
+module.exports = LoadingComponent;

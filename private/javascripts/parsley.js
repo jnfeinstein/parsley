@@ -11,7 +11,7 @@ var Components = require('./components');
 var DashboardComponent = Components.Dashboard;
 var OrganizationComponent = Components.Organization;
 var PrimaryNavbarComponent = Components.PrimaryNavbar;
-var LoadingComponet = Components.Loading;
+var LoadingComponent = Components.Loading;
 
 var CurrentUserStore = require('./stores').CurrentUser;
 
@@ -37,7 +37,7 @@ var AppComponent = React.createClass({
   render: function() {
     var rez;
     if (_.isEmpty(this.state.currentUser)) {
-      rez = <LoadingComponet />;
+      rez = <LoadingComponent />;
     } else {
       rez = (
         <Locations>
