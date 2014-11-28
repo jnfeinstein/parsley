@@ -39,7 +39,7 @@ module.exports = {
   GetOrganizationDetails: function(org) {
     ajax.getJSON(org.Link())
     .done(function(data) {
-      
+
     });
   }
 }
