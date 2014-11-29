@@ -8,26 +8,15 @@ var WebAPI = require('./util').WebAPI;
 var Constants = require('./constants');
 
 var Components = require('./components');
-
-// UI widget components
-var PrimaryNavbarComponent = Components.PrimaryNavbar;
-var SecondaryNavbarComponent = Components.SecondaryNavbar;
-var LoadingComponent = Components.Loading;
-var ErrorComponent = Components.Error
-
-// Main page components
 var DashboardComponent = Components.Dashboard;
 var OrganizationComponent = Components.Organization;
-var SupplierComponent = Components.Supplier;
-var SupplierListComponent = Components.SupplierList;
+var PrimaryNavbarComponent = Components.PrimaryNavbar;
+var LoadingComponent = Components.Loading;
 
-var Stores = require('./stores');
-var CurrentUserStore = Stores.CurrentUser;
-var OrganizationStore = Stores.Organizations;
+var CurrentUserStore = require('./stores').CurrentUser;
 
 var Models = require('./models');
 var Organization = Models.Organization;
-var Supplier = Models.Supplier;
 
 var Router = require("react-router-component");
 var Locations = Router.Locations;
@@ -53,7 +42,7 @@ var AppComponent = React.createClass({
       rez = (
         <Locations>
           <Location path={basepath} handler={DashboardComponent} />
-          <Location path={basepath + Organization.url + "/:org_id(/*)"} handler={OrganizationSpecificComponent} />
+          <Location path={basepath + Organization.url + "/:id"} handler={OrganizationComponent} />
         </Locations>
       );
     }
@@ -72,57 +61,6 @@ var AppComponent = React.createClass({
       currentUser: CurrentUserStore.get()
     });
   }
-});
-
-var OrganizationSpecificComponent = React.createClass({
-  getInitialState: function() {
-    return {
-      currentOrganization: this.getOrganization(this.props.org_id),
-      organizations: OrganizationStore.getAll()
-    };
-  },
-  updateStateFromStores: function() {
-    var rez = { organizations: OrganizationStore.getAll() };
-    if (this.props.org_id != Constants.NewIdPlaceholder) {
-      rez.currentOrganization = OrganizationStore.get(this.props.org_id); // May have changed due to loading new orgs
-    }
-    this.setState(rez);
-  },
-  componentDidMount: function() {
-    OrganizationStore.addChangeListener(this.updateStateFromStores);
-  },
-  componentWillUnmount: function() {
-    OrganizationStore.removeChangeListener(this.updateStateFromStores);
-  },
-  componentWillReceiveProps: function(nextProps) {
-    this.setState({
-      currentOrganization: this.getOrganization(nextProps.org_id)
-    });
-  },
-  render: function() {
-    if (_.isEmpty(this.state.currentOrganization)) {
-      return <ErrorComponent message="Organization does not exist!" />;
-    }
-
-    return (
-      <div className="organization-container">
-        <SecondaryNavbarComponent currentOrganization={this.state.currentOrganization} organizations={this.state.organizations} />
-        <Locations contextual>
-          <Location path="/" // Will also handle URL without trailing slash
-            handler={OrganizationComponent} organization={this.state.currentOrganization} />
-          <Location path={Supplier.org_url} handler={SupplierListComponent} />
-          <Location path={Supplier.org_url + "/:supplier_id"} handler={SupplierComponent} />
-        </Locations>
-      </div>
-    );
-  },
-  getOrganization: function(id) {
-    if (id == 'new') {
-      return new Organization();
-    } else {
-      return OrganizationStore.get(id);
-    }
-  },
 });
 
 WebAPI.GetCurrentUser();
