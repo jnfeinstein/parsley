@@ -83,12 +83,6 @@ var WelcomeComponent = React.createClass({
 });
 
 var AppComponent = React.createClass({
-  routes: {
-    '/': 'welcome',
-    '/welcome': 'welcome',
-    '/welcome/about': 'about',
-    '/welcome/contact': 'contact'
-  },
   render: function() {
     var brand = <Link className="navbar-brand" to="main">Parsley</Link>;
 
