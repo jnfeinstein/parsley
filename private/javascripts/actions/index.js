@@ -1,3 +1,4 @@
 module.exports = {
-  Organization: require('./Organization')
+  Organization: require('./Organization'),
+  Loading: require('./Loading')
 };

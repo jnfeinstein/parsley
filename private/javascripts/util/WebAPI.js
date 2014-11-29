@@ -11,9 +11,14 @@ var Organization = Models.Organization;
 var Stores = require('../stores');
 var OrganizationStore = Stores.Organizations;
 
+var LoadingAction = require('../actions').Loading;
+
 module.exports = {
 	GetCurrentUser: function() {
+    LoadingAction.setLoading(true);
 		ajax.getJSON(User.url + '/me', function(user) {
+      LoadingAction.setLoading(false);
+
       Dispatcher.handleServerAction({
         type: ActionTypes.RECEIVED_CURRENT_USER,
         user: Helpers.Make(Models.User, user)
@@ -27,7 +32,10 @@ module.exports = {
     });
 	},
   CreateOrganization: function(data) {
+    LoadingAction.setLoading(true);
     ajax.postJSON(Organization.url, data, function(reply) {
+      LoadingAction.setLoading(false);
+
       var newOrganization = new Organization(reply);
       Dispatcher.handleServerAction({
         type: ActionTypes.CREATED_ORGANIZATION,
@@ -37,8 +45,10 @@ module.exports = {
     });
   },
   GetOrganizationDetails: function(org) {
+    LoadingAction.setLoading(true);
     ajax.getJSON(org.Link())
     .done(function(data) {
+      LoadingAction.setLoading(false);
 
     });
   }

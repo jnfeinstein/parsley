@@ -1,4 +1,4 @@
-var React = require('react');
+var React = require('react/addons');
 
 var Stores = require('../stores');
 var CurrentUserStore = Stores.CurrentUser;

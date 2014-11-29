@@ -1,5 +1,5 @@
 var _ = require('underscore');
-var React = require('react');
+var React = require('react/addons');
 
 var InputFieldComponent = React.createClass({
   mixins: [React.addons.LinkedStateMixin],

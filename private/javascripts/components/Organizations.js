@@ -1,5 +1,5 @@
 var _ = require('underscore');
-var React = require('react');
+var React = require('react/addons');
 var Helpers = require('../lib').Helpers;
 var WebAPI = require('../util').WebAPI;
 var Dispatcher = require('../dispatcher');
@@ -62,7 +62,7 @@ var OrganizationComponent = React.createClass({
     }
 
     return (
-      <div>
+      <div className="organization-container">
         <SecondaryNavbarComponent currentOrganization={this.state.currentOrganization} organizations={this.state.organizations} />
         {this.state.currentOrganization.Name()}
       </div>

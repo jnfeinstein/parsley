@@ -48,15 +48,21 @@ gulp.task('watch', function() {
 });
 
 gulp.task('jest', function () {
-  return gulp.src('spec/javascripts').pipe(jest({
-    scriptPreprocessor: "./support/preprocessor.js",
+  return gulp.src('private/javascripts').pipe(jest({
+    scriptPreprocessor: "../../spec/javascripts/support/preprocessor.js",
     unmockedModulePathPatterns: [
-        "node_modules/react"
+        "node_modules/react",
+        "node_modules/object-assign",
+        "node_modules/flux",
+        "node_modules/keymirror",
+        "node_modules/underscore",
+        "private/javascripts/constants",
+        "private/javascripts/models/*",
+        "private/javascripts/stores/Store"
     ],
-    testDirectoryName: "spec",
+    testDirectoryName: "__tests__",
     testPathIgnorePatterns: [
-        "node_modules",
-        "spec/javascripts/support"
+        "node_modules"
     ],
     moduleFileExtensions: [
         "js"

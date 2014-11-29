@@ -1,9 +1,9 @@
-var React = require('react');
+var React = require('react/addons');
 
 var ErrorComponent = React.createClass({
   render: function() {
     return (
-      <div>{this.props.message}</div>
+      <div className="error-container">{this.props.message}</div>
     );
   }
 });

@@ -19,9 +19,6 @@ Store.prototype = assign({}, EventEmitter.prototype, {
   removeChangeListener: function(callback) {
     this.removeListener(CHANGE_EVENT, callback);
   },
-  get: function(id) {
-    return this.currentUser_;
-  },
   dispatcherCallback: function(payload) {
     // does nothing by default
   }

@@ -13,7 +13,9 @@ var OrganizationComponent = Components.Organization;
 var PrimaryNavbarComponent = Components.PrimaryNavbar;
 var LoadingComponent = Components.Loading;
 
-var CurrentUserStore = require('./stores').CurrentUser;
+var Stores = require('./stores');
+var CurrentUserStore = Stores.CurrentUser;
+var LoadingStore = Stores.Loading;
 
 var Models = require('./models');
 var Organization = Models.Organization;
@@ -25,9 +27,11 @@ var Location = Router.Location;
 var AppComponent = React.createClass({
   componentDidMount: function() {
     CurrentUserStore.addChangeListener(this.updateStateFromStores);
+    LoadingStore.addChangeListener(this.updateStateFromStores);
   },
   componentWillUnmount: function() {
     CurrentUserStore.removeChangeListener(this.updateStateFromStores);
+    LoadingStore.removeChangeListener(this.updateStateFromStores);
   },
   getInitialState: function() {
     return {
@@ -36,7 +40,7 @@ var AppComponent = React.createClass({
   },
   render: function() {
     var rez;
-    if (_.isEmpty(this.state.currentUser)) {
+    if (this.state.loading) {
       rez = <LoadingComponent />;
     } else {
       rez = (
@@ -58,7 +62,8 @@ var AppComponent = React.createClass({
   },
   updateStateFromStores: function() {
     this.setState({
-      currentUser: CurrentUserStore.get()
+      currentUser: CurrentUserStore.get(),
+      loading: LoadingStore.get()
     });
   }
 });
