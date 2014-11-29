@@ -1,3 +1,5 @@
+var React = require('react');
+
 var LoadingComponent = React.createClass({
   render: function() {
     return (

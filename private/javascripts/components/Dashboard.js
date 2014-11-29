@@ -1,3 +1,5 @@
+var React = require('react');
+
 var Stores = require('../stores');
 var CurrentUserStore = Stores.CurrentUser;
 var OrganizationStore = Stores.Organizations;

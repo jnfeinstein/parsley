@@ -8,7 +8,8 @@ var gulp = require('gulp'),
     gulpif = require('gulp-if'),
     del = require('del'),
     argv = require('yargs').argv,
-    livereload = require('gulp-livereload');
+    livereload = require('gulp-livereload'),
+    jest = require('gulp-jest');
 
 var production = argv.production != undefined;
 var live = argv.live != undefined;
@@ -46,10 +47,28 @@ gulp.task('watch', function() {
   gulp.watch("private/javascripts/**", ['scripts']);
 });
 
+gulp.task('jest', function () {
+  return gulp.src('spec/javascripts').pipe(jest({
+    scriptPreprocessor: "./support/preprocessor.js",
+    unmockedModulePathPatterns: [
+        "node_modules/react"
+    ],
+    testDirectoryName: "spec",
+    testPathIgnorePatterns: [
+        "node_modules",
+        "spec/javascripts/support"
+    ],
+    moduleFileExtensions: [
+        "js"
+    ]
+  }));
+});
 
 gulp.task('clean', function(cb) {
     return del(['public/javascripts', 'public/stylesheets'], cb)
 });
+
+gulp.task('test', ['jest']);
 
 gulp.task('default', ['clean'], function() {
     return gulp.start('css', 'scripts');

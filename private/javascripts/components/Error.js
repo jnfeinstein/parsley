@@ -1,3 +1,5 @@
+var React = require('react');
+
 var ErrorComponent = React.createClass({
   render: function() {
     return (
