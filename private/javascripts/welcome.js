@@ -1,14 +1,20 @@
 require('./lib/Pack');
 window.basepath = '/welcome';
 
+var Helpers = require('./lib/Helpers');
+require('react-bootstrap').NavItem.defaultProps.onSelect = Helpers.BSNavigate;
+
 var ReactBootstrap = require('react-bootstrap');
 var Nav = ReactBootstrap.Nav;
 var Navbar = ReactBootstrap.Navbar;
 var NavItem = ReactBootstrap.NavItem;
 
-var Router = require("react-router-component");
-var Locations = Router.Locations;
-var Location = Router.Location;
+var Router = require("react-router");
+var Route = Router.Route;
+var Redirect = Router.Redirect;
+var RouteHandler = Router.RouteHandler;
+var DefaultRoute = Router.DefaultRoute;
+var Link = Router.Link;
 
 var Helpers = require('./lib').Helpers;
 
@@ -84,15 +90,15 @@ var AppComponent = React.createClass({
     '/welcome/contact': 'contact'
   },
   render: function() {
-    var brand = <a className="navbar-brand" href={basepath}>Parsley</a>;
+    var brand = <Link className="navbar-brand" to="main">Parsley</Link>;
 
     return (
       <div className="app-container">
         <div className="primary-navbar-container">
           <Navbar fluid brand={brand}>
             <Nav>
-              <NavItem eventKey={1} href={basepath + '/about'}>About</NavItem>
-              <NavItem eventKey={2} href={basepath + '/contact'}>Contact</NavItem>
+              <NavItem eventKey={1} href={basepath + "/about"}>About</NavItem>
+              <NavItem eventKey={2} href={basepath + "/contact"}>Contact</NavItem>
             </Nav>
             <Nav right>
               <NavItem eventKey={3} href='#' onSelect={login}>Sign up</NavItem>
@@ -100,18 +106,21 @@ var AppComponent = React.createClass({
             </Nav>
           </Navbar>
         </div>
-        <Locations>
-          <Location path="/" handler={WelcomeComponent} />
-          <Location path={basepath} handler={WelcomeComponent} />
-          <Location path={basepath + "/about"} handler={AboutComponent} />
-          <Location path={basepath + "/contact"} handler={ContactComponent} />
-        </Locations>
+        <RouteHandler/>
       </div>
     );
   }
 });
 
-React.render(
-  <AppComponent history={true} />,
-  document.getElementById('interface')
+var routes = (
+  <Route name="main" handler={AppComponent} path={basepath}>
+    <DefaultRoute handler={WelcomeComponent} />
+    <Redirect from="/" to={basepath} />
+    <Route name="about" path={basepath + '/about'} handler={AboutComponent} />
+    <Route name="contact" path={basepath + '/contact'} handler={ContactComponent} />
+  </Route>
 );
+
+Router.run(routes, Router.HistoryLocation, function (Handler) {
+  React.render(<Handler/>, document.getElementById('interface'));
+});

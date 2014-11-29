@@ -10,6 +10,7 @@ var Constants = require('./constants');
 var Components = require('./components');
 var DashboardComponent = Components.Dashboard;
 var OrganizationComponent = Components.Organization;
+var RecipesComponent = Components.Recipes;
 var PrimaryNavbarComponent = Components.PrimaryNavbar;
 var LoadingComponent = Components.Loading;
 
@@ -20,9 +21,10 @@ var LoadingStore = Stores.Loading;
 var Models = require('./models');
 var Organization = Models.Organization;
 
-var Router = require("react-router-component");
-var Locations = Router.Locations;
-var Location = Router.Location;
+var Router = require("react-router");
+var Route = Router.Route;
+var RouteHandler = Router.RouteHandler;
+var DefaultRoute = Router.DefaultRoute;
 
 var AppComponent = React.createClass({
   componentDidMount: function() {
@@ -35,6 +37,7 @@ var AppComponent = React.createClass({
   },
   getInitialState: function() {
     return {
+      loading: LoadingStore.get(),
       currentUser: CurrentUserStore.get()
     };
   },
@@ -43,12 +46,7 @@ var AppComponent = React.createClass({
     if (this.state.loading) {
       rez = <LoadingComponent />;
     } else {
-      rez = (
-        <Locations>
-          <Location path={basepath} handler={DashboardComponent} />
-          <Location path={basepath + Organization.url + "/:id"} handler={OrganizationComponent} />
-        </Locations>
-      );
+      rez = <RouteHandler params={this.props.params} />;
     }
 
     return (
@@ -69,7 +67,18 @@ var AppComponent = React.createClass({
 });
 
 WebAPI.GetCurrentUser();
-React.render(
-  <AppComponent history={true} />,
-  document.getElementById('interface')
+
+var routes = (
+  <Route name="main" handler={AppComponent} path={basepath}>
+    <DefaultRoute handler={DashboardComponent} />
+    <Route name="organization" path={basepath + "/organizations/:org_id"} handler={OrganizationComponent}>
+      <Route name="recipes" path={basepath + "/organizations/:org_id/recipes"} handler={RecipesComponent} />
+      <Route name="recipe" path={basepath + "/organizations/:org_id/recipes/:recipe_id"} handler={RecipesComponent} />
+    </Route>
+  </Route>
 );
+
+Router.run(routes, Router.HistoryLocation, function (Handler, state) {
+  var params = state.params;
+  React.render(<Handler params={params} />, document.getElementById('interface'));
+});

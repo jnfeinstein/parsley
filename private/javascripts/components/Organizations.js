@@ -4,13 +4,20 @@ var Helpers = require('../lib').Helpers;
 var WebAPI = require('../util').WebAPI;
 var Dispatcher = require('../dispatcher');
 var Constants = require('../constants');
-var Organization = require('../models').Organization;
+
+var Models = require('../models');
+var Organization = Models.Organization;
+var Recipe = Models.Recipe;
+
 var OrganizationStore = require('../stores').Organizations;
 
 var SecondaryNavbarComponent = require('./SecondaryNavbar');
 var ErrorComponent = require('./Error');
-
+var RecipesComponent = require('./Recipes');
 var InputFieldComponent = require("./InputField");
+
+var Router = require("react-router");
+var RouteHandler = Router.RouteHandler;
 
 var OrganizationEditorComponent = React.createClass({
   render: function() {
@@ -39,7 +46,7 @@ var OrganizationEditorComponent = React.createClass({
 var OrganizationComponent = React.createClass({
   getInitialState: function() {
     return {
-      currentOrganization: this.getOrganization(this.props.id),
+      currentOrganization: this.getOrganization(this.props.params.org_id),
       organizations: OrganizationStore.getAll()
     };
   },
@@ -51,7 +58,7 @@ var OrganizationComponent = React.createClass({
   },
   componentWillReceiveProps: function(nextProps) {
     this.setState({
-      currentOrganization: this.getOrganization(nextProps.id)
+      currentOrganization: this.getOrganization(nextProps.params.org_id)
     });
   },
   render: function() {
@@ -64,7 +71,7 @@ var OrganizationComponent = React.createClass({
     return (
       <div className="organization-container">
         <SecondaryNavbarComponent currentOrganization={this.state.currentOrganization} organizations={this.state.organizations} />
-        {this.state.currentOrganization.Name()}
+        <RouteHandler params={this.props.params} />
       </div>
     );
   },
@@ -82,7 +89,7 @@ var OrganizationComponent = React.createClass({
       });
     } else {
       this.setState({
-        currentOrganization: OrganizationStore.get(this.props.id), // May have changed due to loading new orgs
+        currentOrganization: OrganizationStore.get(this.props.params.org_id), // May have changed due to loading new orgs
         organizations: OrganizationStore.getAll()
       });
     }

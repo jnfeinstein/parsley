@@ -1,5 +1,5 @@
 var _ = require('underscore');
-var ReactRouter = require('react-router-component');
+var Router = require('react-router');
 
 var isMobile = {
     Android: function() {
@@ -23,7 +23,7 @@ var isMobile = {
 }
 
 function navigate(path) {
-  ReactRouter.environment.defaultEnvironment.navigate(path);
+  Router.HistoryLocation.push(path);
 }
 
 module.exports = {

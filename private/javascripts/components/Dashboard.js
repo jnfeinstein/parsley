@@ -7,9 +7,11 @@ var OrganizationStore = Stores.Organizations;
 var ReactBootstrap = require('react-bootstrap');
 var Accordion = ReactBootstrap.Accordion;
 var Panel = ReactBootstrap.Panel;
-var Link = require('react-router-component').Link;
+var Link = require('react-router').Link;
 
 var Organization = require('../models').Organization;
+
+var Constants = require('../constants');
 
 var OrganizationPanel = React.createClass({
   render: function() {
@@ -26,7 +28,7 @@ var OrganizationAccordion = React.createClass({
     var orgPanels = _.map(this.props.organizations, function(org) {
       return (
         <Panel key={org.get('id')} eventKey={org.get('id')} header={org.Name()}>
-          <Link href={basepath + org.Link()}>Manage {org.Name()}</Link>
+          <Link to="organization" params={{org_id: org.get('id')}}>Manage {org.Name()}</Link>
         </Panel>
       );
     });
@@ -60,7 +62,7 @@ var DashboardComponent = React.createClass({
     var rez;
     if (!this.state.organizations.length) {
       rez = (
-        <Link href={basepath + Organization.url + '/new'}>Create your first organization</Link>
+        <Link to="organization" params={{org_id: Constants.NewIdPlaceholder}}>Create your first organization</Link>
       );
     } else {
       rez = (
@@ -68,7 +70,7 @@ var DashboardComponent = React.createClass({
           <div>
             You have {this.state.organizations.length} organization{this.state.organizations.length > 1 && 's'}
             <br />
-            <Link href={basepath + Organization.url + '/new'}>Create another organization</Link>
+            <Link to="organization" params={{org_id: Constants.NewIdPlaceholder}}>Create another organization</Link>
           </div>
           <br />
           <OrganizationAccordion organizations={this.state.organizations} />

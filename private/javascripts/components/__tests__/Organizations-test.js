@@ -14,7 +14,7 @@ describe('Organization', function() {
 
   it('renders an organization editor when passed id \'new\'', function() {
     var orgComponent = TestUtils.renderIntoDocument(
-      <Organization id={Constants.NewIdPlaceholder} />
+      <Organization params={{org_id: Constants.NewIdPlaceholder}} />
     );
 
     TestUtils.findRenderedDOMComponentWithClass(orgComponent, 'organization-editor-container');
