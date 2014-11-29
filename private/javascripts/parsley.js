@@ -117,7 +117,7 @@ var OrganizationSpecificComponent = React.createClass({
     );
   },
   getOrganization: function(id) {
-    if (id == 'new') {
+    if (id == Constants.NewIdPlaceholder) {
       return new Organization();
     } else {
       return OrganizationStore.get(id);
