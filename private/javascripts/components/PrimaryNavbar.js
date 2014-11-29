@@ -11,8 +11,8 @@ var PrimaryNavbarComponent = React.createClass({
 
     return (
       <div className="primary-navbar-container">
-        <Navbar fluid brand={brand} toggleNavKey={1}>
-          <Nav right eventKey={1}>
+        <Navbar fluid brand={brand}>
+          <Nav right>
             <NavItem eventKey={1} href="/logout" onSelect={null}>Log out</NavItem>
           </Nav>
         </Navbar>

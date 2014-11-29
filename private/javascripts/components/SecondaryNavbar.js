@@ -20,8 +20,8 @@ var SecondaryNavbar = React.createClass({
 
     return (
       <div className="secondary-navbar-container">
-        <Navbar fluid toggleNavKey={1}>
-          <Nav eventKey={1}>
+        <Navbar fluid>
+          <Nav>
             <DropdownButton eventKey={1} title={this.props.currentOrganization.Name()}>
               {orgLinks}
               <NavItem className='create-new' eventKey='new' href={basepath + Organization.url + '/new'}>Create new</NavItem>
