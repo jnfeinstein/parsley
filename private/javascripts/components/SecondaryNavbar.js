@@ -13,9 +13,8 @@ var SecondaryNavbar = React.createClass({
     var self = this;
 
     var orgLinks = this.props.organizations.map(function(org, i) {
-      var id = org.get('id');
       var isCurrent = org == self.props.currentOrganization;
-      return <NavItem key={id} className={isCurrent && 'current'} href={basepath + org.Link()}>{org.Name()}</NavItem>;
+      return <NavItem key={org.Id()} className={isCurrent && 'current'} href={basepath + org.Link()}>{org.Name()}</NavItem>;
     });
     var curOrgUrl = basepath + this.props.currentOrganization.Link();
 

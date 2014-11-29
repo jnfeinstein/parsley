@@ -31,6 +31,12 @@ Model.prototype = {
   has: function(attr) {
     return this.get(attr) != null;
   },
+  Id: function() {
+    return this.get('id');
+  },
+  Link: function() {
+    return this.constructor.url + "/" + this.Id();
+  }
 }
 
 Model.extend = function(protoProps, staticProps) {
@@ -38,7 +44,7 @@ Model.extend = function(protoProps, staticProps) {
 	var child = function(){ return parent.apply(this, arguments); };
 	_.extend(child, parent, staticProps);
 	var Surrogate = function(){
-		parent.constructor = child;
+		this.constructor = child;
 	};
 	Surrogate.prototype = parent.prototype;
 	child.prototype = new Surrogate;
