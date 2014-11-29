@@ -20,3 +20,4 @@ var InputFieldComponent = React.createClass({
   }
 });
 
+module.exports = InputFieldComponent;

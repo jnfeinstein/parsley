@@ -10,6 +10,8 @@ var OrganizationStore = require('../stores').Organizations;
 var SecondaryNavbarComponent = require('./SecondaryNavbar');
 var ErrorComponent = require('./Error');
 
+var InputFieldComponent = require("./InputField");
+
 var OrganizationEditorComponent = React.createClass({
   render: function() {
     var headerText = (this.props.organization.isNew() ? "New" : "Edit") + " organization";
