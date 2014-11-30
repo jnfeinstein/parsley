@@ -9,13 +9,15 @@ var gulp = require('gulp'),
     del = require('del'),
     argv = require('yargs').argv,
     livereload = require('gulp-livereload'),
-    jest = require('gulp-jest');
+    jest = require('gulp-jest'),
+    plumber = require('gulp-plumber');
 
 var production = argv.production != undefined;
 var live = argv.live != undefined;
 
 gulp.task('css', function() {
   return gulp.src('private/stylesheets/*.scss')
+    .pipe(plumber())
     .pipe(sass({
       style: 'compressed',
       loadPath: ['node_modules/bootstrap-sass/assets/stylesheets'],
@@ -29,6 +31,7 @@ gulp.task('css', function() {
 
 gulp.task('scripts', function() {
     return gulp.src('private/javascripts/*.js', {read: false})
+        .pipe(plumber())
         .pipe(browserify({
             transform: ['reactify'],
             insertGlobals: true,
