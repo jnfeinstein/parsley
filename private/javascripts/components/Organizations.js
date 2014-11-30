@@ -71,7 +71,7 @@ var OrganizationComponent = React.createClass({
     return (
       <div className="organization-container">
         <SecondaryNavbarComponent currentOrganization={this.state.currentOrganization} organizations={this.state.organizations} />
-        <RouteHandler params={this.props.params} />
+        <RouteHandler params={this.props.params} organization={this.state.currentOrganization} />
       </div>
     );
   },
