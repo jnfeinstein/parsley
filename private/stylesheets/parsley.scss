@@ -1,13 +1,11 @@
+@import "combobox";
+
 div.primary-navbar-container nav {
   margin-bottom: 0px;
 
   > div.container-fluid {
     background-color: lightyellow;
   }
-}
-
-div.app-container {
-
 }
 
 div.organization-editor-container {
@@ -33,6 +31,12 @@ div.secondary-navbar-container {
 div.organization-accordion-container {
   margin-left: 20px;
   margin-right: 20px;
+}
+
+div.recipe-editor-container {
+  div.name-field {
+    margin-bottom: 10px;
+  }
 }
 
 // This will center the menu items on web version
