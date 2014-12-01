@@ -64,7 +64,7 @@ WebAPI.GetCurrentUser();
 var routes = (
   <Route name="main" handler={AppComponent} path={basepath}>
     <DefaultRoute handler={DashboardComponent} />
-    <Route name="organization" path={basepath + "/organizations/:org_id"} handler={OrganizationComponent}>
+    <Route name="organization" path={"organizations/:org_id"} handler={OrganizationComponent}>
       <Route name="recipes" path="recipes" handler={RecipesComponent} />
       <Route name="recipe" path="recipes/:recipe_id" handler={RecipesComponent} />
     </Route>
