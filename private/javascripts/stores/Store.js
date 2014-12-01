@@ -1,4 +1,5 @@
 var assign = require('object-assign');
+var _ = require('underscore');
 
 var Dispatcher = require('../dispatcher');
 var EventEmitter = require('events').EventEmitter;
@@ -7,9 +8,13 @@ var CHANGE_EVENT = 'change';
 
 function Store() {
   this.dispatchToken = Dispatcher.register(this.dispatcherCallback.bind(this));
+  this.initialize.apply(this, arguments);
 }
 
 Store.prototype = assign({}, EventEmitter.prototype, {
+  initialize: function() {
+    // does nothing
+  },
   emitChange: function() {
     this.emit(CHANGE_EVENT);
   },
@@ -23,5 +28,24 @@ Store.prototype = assign({}, EventEmitter.prototype, {
     // does nothing by default
   }
 });
+
+Store.extend = function(protoProps, staticProps) {
+  var parent = this;
+  var child = function(){ return parent.apply(this, arguments); };
+  _.extend(child, parent, staticProps);
+  var Surrogate = function(){
+    this.constructor = child;
+  };
+  Surrogate.prototype = parent.prototype;
+  child.prototype = new Surrogate;
+
+  if (protoProps) {
+    _.extend(child.prototype, protoProps);
+  }
+
+  child.__super__ = parent.prototype;
+
+  return child;
+};
 
 module.exports = Store;
