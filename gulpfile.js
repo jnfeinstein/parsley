@@ -61,7 +61,7 @@ gulp.task('jest', function () {
         "node_modules/underscore",
         "private/javascripts/constants",
         "private/javascripts/models/*",
-        "private/javascripts/stores/Store"
+        "private/javascripts/stores/*"
     ],
     testDirectoryName: "__tests__",
     testPathIgnorePatterns: [
