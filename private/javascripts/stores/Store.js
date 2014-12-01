@@ -26,6 +26,18 @@ Store.prototype = assign({}, EventEmitter.prototype, {
   },
   dispatcherCallback: function(payload) {
     // does nothing by default
+  },
+  mixin: function() {
+    var store = this;
+    // All events run in the context of the component
+    return {
+      componentDidMount: function() {
+        store.addChangeListener(this.updateStateFromStores);
+      },
+      componentWillUnmount: function() {
+        store.removeChangeListener(this.updateStateFromStores);
+      }
+    }
   }
 });
 

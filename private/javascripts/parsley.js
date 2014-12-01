@@ -27,14 +27,7 @@ var RouteHandler = Router.RouteHandler;
 var DefaultRoute = Router.DefaultRoute;
 
 var AppComponent = React.createClass({
-  componentDidMount: function() {
-    CurrentUserStore.addChangeListener(this.updateStateFromStores);
-    LoadingStore.addChangeListener(this.updateStateFromStores);
-  },
-  componentWillUnmount: function() {
-    CurrentUserStore.removeChangeListener(this.updateStateFromStores);
-    LoadingStore.removeChangeListener(this.updateStateFromStores);
-  },
+  mixins: [LoadingStore.mixin(), CurrentUserStore.mixin()],
   getInitialState: function() {
     return {
       loading: LoadingStore.get(),

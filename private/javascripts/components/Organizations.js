@@ -44,17 +44,12 @@ var OrganizationEditorComponent = React.createClass({
 });
 
 var OrganizationComponent = React.createClass({
+  mixins: [OrganizationStore.mixin()],
   getInitialState: function() {
     return {
       currentOrganization: this.getOrganization(this.props.params.org_id),
       organizations: OrganizationStore.getAll()
     };
-  },
-  componentDidMount: function() {
-    OrganizationStore.addChangeListener(this.updateStateFromStores);
-  },
-  componentWillUnmount: function() {
-    OrganizationStore.removeChangeListener(this.updateStateFromStores);
   },
   componentWillReceiveProps: function(nextProps) {
     this.setState({
